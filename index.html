@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jueguito</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- scores del jugador y de la compu -->
+     <div class="score">
+        <div class="player_score">
+            <span>Jugador:</span><span id="playerWins">0</span>
+        </div>
+        <div class="compu_score">
+            <span>Computadora:</span><span class="compuWins">0</span>
+        </div>
+     </div>   
+    <!--container -->
+    <div class="container">
+        <div class="board">
+           <div class="celda" data-index="0">1</div> 
+           <div class="celda" data-index="1">2</div> 
+           <div class="celda" data-index="2">3</div> 
+           <div class="celda" data-index="3">4</div> 
+           <div class="celda" data-index="4">5</div> 
+           <div class="celda" data-index="5">6</div> 
+           <div class="celda" data-index="6">7</div> 
+           <div class="celda" data-index="7">8</div> 
+           <div class="celda" data-index="8">9</div> 
+        </div>
+
+    <button id="restart">Reiniciar</button>
+    <button id="limpiar">Borrar registro</button>
+    <div id="timer" class="timer">Tiempo: <span id="time">0</span> segundos</div>
+    <div id="message" class="message"></div>
+    <h3>Mejores Tiempos</h3>
+    <ol id="highScores" class="high-scores"></ol>
+
+</div>
+
+    
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

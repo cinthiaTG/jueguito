@@ -11,44 +11,35 @@
         <h1>Jueguito</h1>
     </header>
 
-    <!-- scores del jugador y de la compu -->
-    <!-- <section>
-     <div class="score">
-        <div class="player_score">
-            <span>Jugador:</span><span id="playerWins">0</span>
-        </div>
-        <div class="compu_score">
-            <span>Computadora:</span><span class="compuWins">0</span>
-        </div>
-     </div>
-    </section> -->
-
     <main>
-    <!--container -->
         <div class="container">
-                <div class="board">
-                    <div class="celda" data-index="0">1</div> 
-                    <div class="celda" data-index="1">2</div> 
-                    <div class="celda" data-index="2">3</div> 
-                    <div class="celda" data-index="3">4</div> 
-                    <div class="celda" data-index="4">5</div> 
-                    <div class="celda" data-index="5">6</div> 
-                    <div class="celda" data-index="6">7</div> 
-                    <div class="celda" data-index="7">8</div> 
-                    <div class="celda" data-index="8">9</div> 
-                </div>
+            <div class="score">
+                <div><strong>Jugador</strong> <span id="playerWins">0</span></div>
+                <div><strong>Computadora</strong> <span id="compuWins">0</span></div>
+            </div>
+
+            <div class="board" role="grid" aria-label="Tablero de juego">
+                <div class="celda" role="button" tabindex="0" data-index="0">1</div>
+                <div class="celda" role="button" tabindex="0" data-index="1">2</div>
+                <div class="celda" role="button" tabindex="0" data-index="2">3</div>
+                <div class="celda" role="button" tabindex="0" data-index="3">4</div>
+                <div class="celda" role="button" tabindex="0" data-index="4">5</div>
+                <div class="celda" role="button" tabindex="0" data-index="5">6</div>
+                <div class="celda" role="button" tabindex="0" data-index="6">7</div>
+                <div class="celda" role="button" tabindex="0" data-index="7">8</div>
+                <div class="celda" role="button" tabindex="0" data-index="8">9</div>
+            </div>
 
             <button id="restart" class="boton">Reiniciar</button>
             <button id="limpiar" class="boton">Borrar registro</button>
-            <div id="timer" class="timer">Tiempo: <span id="time">0</span> segundos</div>
-            <div id="message" class="message"></div>
+
+            <div id="timer" class="timer" aria-live="polite">Tiempo: <span id="time">0</span> segundos</div>
+            <div id="message" class="message" aria-live="polite"></div>
+
             <h3>Mejores Tiempos</h3>
             <ol id="highScores" class="high-scores"></ol>
-
         </div>
-</main>
-
-    
+    </main>
 
     <script src="/js/script.js"></script>
 </body>

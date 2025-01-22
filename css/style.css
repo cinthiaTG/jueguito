@@ -4,7 +4,7 @@
     --oscuro: #212121;
     --primario: #ffc107;
     --secundario:#0097a7;
-    --fondos: #A0DD5A;
+    --fondos: #d3e7bb;
     --gris: #757575;
 }
 
@@ -32,7 +32,7 @@ body{
 
 /* Header */
 header {
-    background-color: #6200ea;
+    background-color: #beadd6;
     color: white;
     padding: 1rem;
     text-align: center;
@@ -57,27 +57,28 @@ h1 {
     width: 90%;
 }
 
-/* Board */
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
     gap: 10px;
-    margin: 1rem 0;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .celda {
+    width: 100%; /* Asegura que las celdas se ajusten al contenedor */
+    height: 100px; /* Ajusta según el diseño */
     background-color: rgba(221, 169, 169, 0.5);
     border-radius: 15px;
-    border: #212121;
+    border: 1px solid #212121;
     font-size: 2rem;
-    color: #df3232;
+    color: #9b3583;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 90%;
-    max-width: 300px;
 }
+
 
 .boton:hover {
     background-color: #4500b5;

@@ -12,7 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let timer = 0;
     let interval;
 
-    // Initialize game
+    // Función que anuncia el estado de la celda al hacer clic
+    function announceCellState(cell) {
+        const textContent = cell.textContent; // El contenido actual de la celda
+        const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
+
+        // Verifica si la celda tiene contenido y anuncia el estado
+        if (textContent === "O") {
+            msg.text = `La celda ${cell.dataset.index} está ocupada por O.`;
+        } else if (textContent === "X") {
+            msg.text = `La celda ${cell.dataset.index} está ocupada por X.`;
+        } else {
+            msg.text = `La celda ${cell.dataset.index} está vacía.`;
+        }
+
+        // Reproduce el mensaje de voz
+        speechSynthesis.speak(msg);
+    }
+
+    // Función para iniciar el juego
     function startGame() {
         board.fill(null);
         cells.forEach(cell => {
@@ -28,13 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
         interval = setInterval(updateTimer, 1000);
     }
 
-    // Update timer
+    // Función para actualizar el temporizador
     function updateTimer() {
         timer++;
         timerElement.textContent = timer;
     }
 
-    // Check winner
+    // Función para verificar si hay un ganador
     function checkWinner() {
         const winningCombinations = [
             [0, 1, 2],
@@ -57,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
     }
 
-    // Handle click on a cell
+    // Función que maneja el clic en una celda
     function handleCellClick(e) {
         const index = e.target.dataset.index;
         if (board[index] || !gameActive) return;
@@ -82,12 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Switch to computer if player is done
+        // Cambiar al jugador contrario si la jugada es de un jugador
         currentPlayer = currentPlayer === "X" ? "O" : "X";
         if (currentPlayer === "O") computerMove();
     }
 
-    // Computer makes a move
+    // Función para que la computadora haga una jugada
     function computerMove() {
         if (!gameActive) return;
 
@@ -112,20 +130,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        currentPlayer = "X"; // Return control to player
+        currentPlayer = "X"; // Retorna el control al jugador
     }
 
-    // Save high score
+    // Función para guardar el mejor tiempo
     function saveHighScore(time) {
         let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
         highScores.push(time);
         highScores.sort((a, b) => a - b);
-        highScores = highScores.slice(0, 10); // Keep top 10 scores
+        highScores = highScores.slice(0, 10); // Mantener solo los mejores 10 tiempos
         localStorage.setItem("highScores", JSON.stringify(highScores));
         displayHighScores();
     }
 
-    // Display high scores
+    // Función para mostrar los mejores tiempos
     function displayHighScores() {
         const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
         highScoresList.innerHTML = highScores
@@ -133,18 +151,25 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("");
     }
 
-    // Clear high scores
+    // Función para borrar los mejores tiempos
     function clearHighScores() {
         localStorage.removeItem("highScores");
         displayHighScores();
     }
 
-    // Attach event listeners
-    cells.forEach(cell => cell.addEventListener("click", handleCellClick));
+    // Agregar eventos a las celdas
+    cells.forEach(cell => {
+        cell.addEventListener("click", (e) => {
+            handleCellClick(e);
+            announceCellState(cell); // Anunciar el estado de la celda
+        });
+    });
+
+    // Agregar eventos a los botones
     restartButton.addEventListener("click", startGame);
     clearButton.addEventListener("click", clearHighScores);
 
-    // Initialize
+    // Inicializar
     startGame();
     displayHighScores();
 });

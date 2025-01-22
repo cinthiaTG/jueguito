@@ -12,19 +12,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let timer = 0;
     let interval;
 
-    // Función que anuncia el estado de la celda al hacer clic
-    function announceCellState(cell) {
-        const textContent = cell.textContent; // El contenido actual de la celda
+    // Función que anuncia el estado de la celda o botón cuando se pasa el mouse por encima
+    function announceCellState(element) {
+        const textContent = element.textContent; // El contenido actual del elemento
         const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
 
-        // Verifica si la celda tiene contenido y anuncia el estado
-        if (textContent === "O") {
-            msg.text = `La celda ${cell.dataset.index} está ocupada por O.`;
-        } else if (textContent === "X") {
-            msg.text = `La celda ${cell.dataset.index} está ocupada por X.`;
-        } else {
-            msg.text = `La celda ${cell.dataset.index} está vacía.`;
-        }
+        // Verifica si el elemento es una celda o un botón y anuncia el estado
+        if (element.classList.contains("celda")) {
+            // Si es una celda
+            if (textContent === "O") {
+                msg.text = `La celda ${element.dataset.index} está ocupada por O.`;
+            } else if (textContent === "X") {
+                msg.text = `La celda ${element.dataset.index} está ocupada por X.`;
+            } else {
+                msg.text = `La celda ${element.dataset.index} está vacía.`;
+            }
+        } else if (element === restartButton) {
+            // Si es el botón de reiniciar
+            msg.text = "Botón de reiniciar.";
+        } else if (element === clearButton) {
+            // Si es el botón de borrar registros
+            msg.text = "Botón de borrar registros.";
+        } 
 
         // Reproduce el mensaje de voz
         speechSynthesis.speak(msg);
@@ -159,15 +168,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Agregar eventos a las celdas
     cells.forEach(cell => {
-        cell.addEventListener("click", (e) => {
-            handleCellClick(e);
+        cell.addEventListener("mouseover", () => {
             announceCellState(cell); // Anunciar el estado de la celda
         });
+        cell.addEventListener("click", handleCellClick); // Manejar el clic en la celda
+    });
+
+    // Agregar eventos a los botones
+    restartButton.addEventListener("mouseover", () => {
+        announceCellState(restartButton); // Anunciar el estado del botón de reiniciar
+    });
+
+    clearButton.addEventListener("mouseover", () => {
+        announceCellState(clearButton); // Anunciar el estado del botón de borrar registros
     });
 
     // Agregar eventos a los botones
     restartButton.addEventListener("click", startGame);
     clearButton.addEventListener("click", clearHighScores);
+
+    // Agregar evento para el cuerpo (fuera del tablero)
+    document.body.addEventListener("mouseover", () => {
+        announceCellState(document.body); // Anunciar cuando estamos fuera del tablero
+    });
 
     // Inicializar
     startGame();

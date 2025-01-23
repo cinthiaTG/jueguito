@@ -54,16 +54,37 @@ h1 {
     margin: 0;
 }
 
+main{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    width: 100%;
+    gap: 3rem;
+}
+
 /* Container */
 .container {
     background-color: var(--blanco);
     max-width: 600px;
-    margin: 2rem auto;
+    margin: 2rem;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px var(--sombra);
     border: 1px solid var(--borde);
     text-align: center;
+    flex: 1;
+    
+}
+
+.high-scores-container {
+    width: 300px;
+    padding: 1rem;
+    margin-left: 0;
+    margin: 3rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
 }
 
 .board {
@@ -142,6 +163,6 @@ h1 {
 
 .high-scores li:hover{
     background-color: var(--primario);
-    transform: scale(1.10);
+    transform: scale(1.05);
 }
 

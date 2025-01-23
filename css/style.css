@@ -2,10 +2,12 @@
 :root{
     --blanco: #FFFFFF;
     --oscuro: #212121;
-    --primario: #ffc107;
-    --secundario:#0097a7;
-    --fondos: #d3e7bb;
-    --gris: #757575;
+    --primario: #a007ff;
+    --secundario:#00a783;
+    --fondos: #f8f1f8;
+    --gris: #3c3c3c;
+    --sombra: rgba(0, 0, 0, 0.1);
+    --borde: #e0e0e0;
 }
 
 .html{
@@ -14,99 +16,132 @@
 }
 
 *, *:before, *:after {
-    box-sizing: inherit;
-  }
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body{
     font-size: 16 px;    
     font-family: "Krub", sans-serif;
-    background-color: #ead5ff;
+    line-height: 1.5;
+    color: var(--oscuro);
+    background-color: var(--fondos);
     margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    padding: 0;
     box-sizing: border-box;
 }
 
 /* Header */
 header {
-    background-color: #beadd6;
-    color: white;
-    padding: 1rem;
+    background-color: var(--primario);
+    color: var(--blanco);
     text-align: center;
     width: 100%;
+    padding: 1rem;
+    box-shadow: 0 2px 4px var(--sombra);
 }
 
 h1 {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
     margin: 0;
-    font-size: 2rem;
 }
 
 /* Container */
 .container {
+    background-color: var(--blanco);
     max-width: 600px;
-    margin: 1rem;
-    text-align: center;
-    padding: 1rem;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    padding: 2rem;
     border-radius: 8px;
-    box-sizing: border-box;
-    width: 90%;
+    box-shadow: 0 4px 8px var(--sombra);
+    border: 1px solid var(--borde);
+    text-align: center;
 }
 
 .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
     gap: 10px;
+    margin: 20px auto;
     max-width: 300px;
-    margin: 0 auto;
 }
 
 .celda {
     width: 100%; /* Asegura que las celdas se ajusten al contenedor */
     height: 100px; /* Ajusta según el diseño */
-    background-color: rgba(221, 169, 169, 0.5);
-    border-radius: 15px;
-    border: 1px solid #212121;
+    background-color: var(--secundario);
+    color: var(--blanco);
     font-size: 2rem;
-    color: #9b3583;
+    font-weight: 700;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    border-radius: 15px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+.celda:hover{
+    background-color: var(--primario);
+    transform: scale(1.10);
+}
+
+.boton{
+    background-color:var(--primario);
+    color: var(--blanco);
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 1rem 0.5rem;
+}
 
 .boton:hover {
-    background-color: #4500b5;
+    background-color: var(--secundario);
+    transform: translateY(-10px);
 }
 
 /* Timer and Messages */
 .timer, .message {
     margin: 1rem 0;
     font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--oscuro);
 }
 
 /* High Scores */
 .high-scores {
     list-style: none;
     padding: 0;
+    font-size: 14px;
+    color: var(--oscuro);
 }
 
-.boton{
-    background-color:var(--fondos);
-    color: var(--oscuro);
-    padding: 1rem 2rem;
-    margin-top: .5rem;
-    border-radius: 2rem;
-    font-size: 1rem;
-    border: none;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.high-scores li{
+    font-weight: 600;
+    color: var(--blanco);
+    background-color: var(--secundario);
+    padding: 0.8rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px var(--sombra);
 }
+
+.high-scores li:hover{
+    background-color: var(--primario);
+    transform: scale(1.10);
+}
+

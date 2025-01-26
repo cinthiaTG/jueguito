@@ -7,17 +7,16 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header>
-      <h1>Jueguito</h1>
+    <header class="juegos">
+      <h1>Jueguitos</h1>
     </header>
+    <nav>
+        <a class="juego containerJuegos" id="jueguito1" href="/index.html">Jueguito 1</a>
+        <a class="juego containerJuegos" id="jueguito2" href="/wordle.html">Jueguito 2</a>
+    </nav>
 
     <main>
       <div class="container">
-        <div class="score">
-          <div><strong>Jugador</strong> <span id="playerWins">0</span></div>
-          <div><strong>Computadora</strong> <span id="compuWins">0</span></div>
-        </div>
-
         <div class="board" role="grid" aria-label="Tablero de juego">
           <div class="celda" role="button" tabindex="0" data-index="0">1</div>
           <div class="celda" role="button" tabindex="0" data-index="1">2</div>

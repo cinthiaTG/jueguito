@@ -53,6 +53,20 @@ h1 {
     text-transform: uppercase;
     margin: 0;
 }
+.juegos{
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+.juego{
+    font-size: 24px;
+    font-weight: 700;
+   /*text-transform: uppercase;*/
+    margin: 0;
+}
 
 main{
     display: flex;
@@ -78,6 +92,16 @@ main{
 }
 
 .high-scores-container {
+    width: 300px;
+    padding: 1rem;
+    margin-left: 0;
+    margin: 3rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+}
+
+.containerJuegos{
     width: 300px;
     padding: 1rem;
     margin-left: 0;

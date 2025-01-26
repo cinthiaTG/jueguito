@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cells = document.querySelectorAll(".celda");
     const restartButton = document.getElementById("restart");
     const clearButton = document.getElementById("limpiar");
+    const juegito1Button = document.getElementById("jueguito1");
+    const juegito2Button = document.getElementById("jueguito2");
     const timerElement = document.getElementById("time");
     const highScoresList = document.getElementById("highScores");
     const messageElement = document.getElementById("message");
@@ -17,9 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const textContent = element.textContent; // El contenido actual del elemento
         const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
 
-        // Verifica si el elemento es una celda o un botón y anuncia el estado
         if (element.classList.contains("celda")) {
-            // Si es una celda
             if (textContent === "O") {
                 msg.text = `La celda ${element.dataset.index} está ocupada por O.`;
             } else if (textContent === "X") {
@@ -28,14 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 msg.text = `La celda ${element.dataset.index} está vacía.`;
             }
         } else if (element === restartButton) {
-            // Si es el botón de reiniciar
             msg.text = "Botón de reiniciar.";
         } else if (element === clearButton) {
-            // Si es el botón de borrar registros
             msg.text = "Botón de borrar registros.";
-        } 
+        } else if (element === juegito1Button) {
+            msg.text = "Jueguito 1.";
+        } else if (element === juegito2Button) {
+            msg.text = "Jueguito 2.";
+        }
 
-        // Reproduce el mensaje de voz
         speechSynthesis.speak(msg);
     }
 
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Función para actualizar el temporizador
     function updateTimer() {
         timer++;
-        timerElement.textContent = timer;
+        timerElement.textContent = `${timer} segundos`;
     }
 
     // Función para verificar si hay un ganador
@@ -99,6 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
             messageElement.textContent = `${currentPlayer} gana en ${timer} segundos!`;
             clearInterval(interval);
             saveHighScore(timer);
+
+            // Anuncio de victoria
+            const msg = new SpeechSynthesisUtterance(`${currentPlayer} gana en ${timer} segundos`);
+            speechSynthesis.speak(msg);
             return;
         }
 
@@ -106,10 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
             gameActive = false;
             messageElement.textContent = "¡Empate!";
             clearInterval(interval);
+
+            // Anuncio de empate
+            const msg = new SpeechSynthesisUtterance("¡Empate!");
+            speechSynthesis.speak(msg);
             return;
         }
 
-        // Cambiar al jugador contrario si la jugada es de un jugador
         currentPlayer = currentPlayer === "X" ? "O" : "X";
         if (currentPlayer === "O") computerMove();
     }
@@ -129,6 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
             winningCombo.forEach(idx => cells[idx].classList.add("winner"));
             messageElement.textContent = `${currentPlayer} gana en ${timer} segundos!`;
             clearInterval(interval);
+
+            // Anuncio de victoria de la computadora
+            const msg = new SpeechSynthesisUtterance(`${currentPlayer} gana en ${timer} segundos`);
+            speechSynthesis.speak(msg);
             return;
         }
 
@@ -136,10 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
             gameActive = false;
             messageElement.textContent = "¡Empate!";
             clearInterval(interval);
+
+            // Anuncio de empate
+            const msg = new SpeechSynthesisUtterance("¡Empate!");
+            speechSynthesis.speak(msg);
             return;
         }
 
-        currentPlayer = "X"; // Retorna el control al jugador
+        currentPlayer = "X";
     }
 
     // Función para guardar el mejor tiempo
@@ -147,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
         highScores.push(time);
         highScores.sort((a, b) => a - b);
-        highScores = highScores.slice(0, 10); // Mantener solo los mejores 10 tiempos
+        highScores = highScores.slice(0, 10);
         localStorage.setItem("highScores", JSON.stringify(highScores));
         displayHighScores();
     }
@@ -168,29 +184,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Agregar eventos a las celdas
     cells.forEach(cell => {
-        cell.addEventListener("mouseover", () => {
-            announceCellState(cell); // Anunciar el estado de la celda
-        });
-        cell.addEventListener("click", handleCellClick); // Manejar el clic en la celda
+        cell.addEventListener("mouseover", () => announceCellState(cell));
+        cell.addEventListener("click", handleCellClick);
     });
 
-    // Agregar eventos a los botones
-    restartButton.addEventListener("mouseover", () => {
-        announceCellState(restartButton); // Anunciar el estado del botón de reiniciar
-    });
-
-    clearButton.addEventListener("mouseover", () => {
-        announceCellState(clearButton); // Anunciar el estado del botón de borrar registros
-    });
-
-    // Agregar eventos a los botones
+    // Eventos para botones
+    restartButton.addEventListener("mouseover", () => announceCellState(restartButton));
+    clearButton.addEventListener("mouseover", () => announceCellState(clearButton));
+    juegito1Button.addEventListener("mouseover", () => announceCellState(juegito1Button));
+    juegito2Button.addEventListener("mouseover", () => announceCellState(juegito2Button));
     restartButton.addEventListener("click", startGame);
     clearButton.addEventListener("click", clearHighScores);
-
-    // Agregar evento para el cuerpo (fuera del tablero)
-    document.body.addEventListener("mouseover", () => {
-        announceCellState(document.body); // Anunciar cuando estamos fuera del tablero
-    });
 
     // Inicializar
     startGame();

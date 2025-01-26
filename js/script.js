@@ -32,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (element === clearButton) {
             msg.text = "Botón de borrar registros.";
         } else if (element === juegito1Button) {
-            msg.text = "Jueguito 1.";
+            msg.text = "Jueguito 1 tik-tak-toe.";
         } else if (element === juegito2Button) {
-            msg.text = "Jueguito 2.";
+            msg.text = "Jueguito 2 piedra, papel o tijeras.";
         }
 
         speechSynthesis.speak(msg);

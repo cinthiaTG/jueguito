@@ -1,0 +1,210 @@
+:root {
+    --blanco: #FFFFFF;
+    --oscuro: #212121;
+    --primario: #a007ff;
+    --secundario: #00a783;
+    --fondos: #f8f1f8;
+    --gris: #3c3c3c;
+    --sombra: rgba(0, 0, 0, 0.1);
+    --borde: #e0e0e0;
+}
+
+html {
+    font-size: 62.5%; /* Para facilitar conversiones con rem */
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-size: 1.6rem;    
+    font-family: "Krub", sans-serif;
+    line-height: 1.5;
+    color: var(--oscuro);
+    background-color: var(--fondos);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+
+header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Juegos Section */
+.juegos {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px var(--sombra);
+}
+
+.juego {
+    font-size: 2.4rem;
+    font-weight: 700;
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    width: 100%;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.container {
+    background-color: var(--blanco);
+    max-width: 600px;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+    border: 1px solid var(--borde);
+    text-align: center;
+    flex: 1;
+}
+
+.containerJuegos {
+    width: 300px;
+    padding: 1.5rem;
+    margin: 3rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+}
+
+/* Board/Grid */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 300px;
+}
+
+.celda {
+    width: 100%; /* Ajusta según el contenedor */
+    height: 10rem;
+    background-color:rgb(206, 147, 253);
+    color: var(--blanco);
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Efecto al pasar el cursor */
+.celda:hover {
+    background-color: var(--blanco);
+    color: var(--gris);
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto al hacer clic */
+.celda:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones */
+.boton {
+    background-color: var(--primario);
+    color: var(--blanco);
+    font-size: 1.6rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 2.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 1rem 0.5rem;
+}
+
+.boton:hover {
+    background-color: var(--secundario);
+    transform: translateY(-0.5rem);
+}
+
+/* Timer and Messages */
+.timer, .message {
+    margin: 1rem 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--oscuro);
+}
+
+/* High Scores */
+.high-scores-container {
+    width: 300px;
+    padding: 1.5rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+}
+
+.high-scores {
+    list-style: none;
+    padding: 0;
+    font-size: 1.4rem;
+    color: var(--oscuro);
+}
+.choice{
+    list-style: none;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    padding: 0.8rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+}
+
+.high-scores {
+    font-weight: 600;
+    color: var(--gris);
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    align-items: center;
+}
+.computer-choice-container {
+    list-style: none;
+    padding: 0;
+    font-size: 2.5rem; /* Tamaño de letra aumentado */
+    margin: 0.5rem 0;
+}
+#computer-choice-visual {
+    font-size: 2.5rem; /* Tamaño de letra aumentado */
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primario);
+}

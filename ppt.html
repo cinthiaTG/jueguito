@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piedra, Papel o Tijera</title>
+  <link rel="stylesheet" href="/css/ppt.css">
+</head>
+<body>
+  <header class="juegos">
+    <h1>Jueguitos</h1>
+  </header>
+
+  <nav class="game-navigation">
+    <a class="juego containerJuegos" id="jueguito1" href="/index.html">Jueguito 1</a>
+    <a class="juego containerJuegos" id="jueguito2" href="/ppt.html">Jueguito 2</a>
+  </nav>
+
+  <main>
+    <div class="container">
+      <h1 class="game-title">Piedra, Papel o Tijera</h1>
+
+      <div class="choices board">
+        <button class="celda choice" data-choice="piedra">Piedra</button>
+        <button class="celda choice" data-choice="papel">Papel</button>
+        <button class="celda choice" data-choice="tijera">Tijeras</button>
+      </div>
+
+      <div class="result">
+        <p id="player-choice">Tu elección: <span>-</span></p>
+        <p id="computer-choice">Elección de la computadora: <span>-</span></p>
+        <h2 id="result-message">¡Haz tu jugada!</h2>
+      </div>
+    </div>
+    <div class="container computer-choice-container">
+        <h2>Elección de la computadora: </h2>
+        <p id="computer-choice-visual">Accion computadora</p>
+
+    </div>
+
+
+
+  </main>
+  <section class="derecha">
+    
+      <div class="scoreboard high-scores-container">
+          <ul class="high-scores">
+            <li>Jugador: <span id="player-score">0</span></li>
+            <li>Computadora: <span id="computer-score">0</span></li>
+          </ul>
+        </div>
+</section>
+
+  <script src="/js/ppt.js"></script>
+</body>
+</html>

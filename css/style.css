@@ -81,6 +81,11 @@ nav a {
   box-shadow: 0 4px 8px var(--sombra);
 }
 
+#jueguito1{
+    background-color: var(--blanco);
+    color: var(--primario);
+}
+
 .juegos {
   background-color: var(--primario);
   color: var(--blanco);

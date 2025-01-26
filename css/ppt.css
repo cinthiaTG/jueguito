@@ -75,6 +75,11 @@ nav a{
     box-shadow: 0 4px 8px var(--sombra);
 }
 
+#jueguito2{
+    background-color: var(--blanco);
+    color: var(--primario);
+}
+
 /* Juegos Section */
 .juegos {
   background-color: var(--primario);

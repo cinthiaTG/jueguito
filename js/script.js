@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Función que anuncia el estado de la celda o botón cuando se pasa el mouse por encima
     function announceCellState(element) {
+        speechSynthesis.cancel();
         const textContent = element.textContent; // El contenido actual del elemento
         const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
 
@@ -32,9 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (element === clearButton) {
             msg.text = "Botón de borrar registros.";
         } else if (element === juegito1Button) {
-            msg.text = "Jueguito 1 tik-tak-toe.";
+            msg.text = "Jueguito 1, tik-tak-toe.";
         } else if (element === juegito2Button) {
-            msg.text = "Jueguito 2 piedra, papel o tijeras.";
+            msg.text = "Jueguito 2, piedra, papel o tijeras.";
         }
 
         speechSynthesis.speak(msg);
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Función para actualizar el temporizador
     function updateTimer() {
         timer++;
-        timerElement.textContent = `${timer} segundos`;
+        timerElement.textContent = `${timer}`;
     }
 
     // Función para verificar si hay un ganador

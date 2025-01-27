@@ -221,8 +221,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayHighScores() {
     const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
     highScoresList.innerHTML = highScores
-      .map((score) => `<li>${score} segundos</li>`)
+      .map((score, index) => `<li data-index="${index}">${score} segundos</li>`)
       .join("");
+
+    const scoreItems = highScoresList.querySelectorAll("li");
+    scoreItems.forEach((item) => {
+      item.addEventListener("mouseover", () => {
+        const index = item.dataset.index;
+        const score = item.textContent;
+        const msg = new SpeechSynthesisUtterance(
+          `Puesto ${parseInt(index) + 1}: ${score}`
+        );
+        speechSynthesis.speak(msg);
+      });
+    });
   }
 
   // Función para borrar los mejores tiempos
@@ -326,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     } else if (!(messageElement.textContent == "") || timer <= 0) {
       console.log(messageElement.textContent);
-      
+
       initialiceGame();
       const msg = new SpeechSynthesisUtterance("Partida reiniciada con éxito.");
       speechSynthesis.speak(msg);
@@ -364,11 +376,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (highScores.length === 0) {
       const msg = new SpeechSynthesisUtterance(
-        "No hay mejores tiempos registrados hasta el momento."
+        "No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro. Presione enter para confirmar."
       );
       speechSynthesis.speak(msg);
       msg.onend = () => {
-        alert("No hay mejores tiempos registrados hasta el momento.");
+        alert("No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro.");
       };
       return;
     }
@@ -381,7 +393,7 @@ document.addEventListener("DOMContentLoaded", () => {
       highScoresMessage += `Posición ${index + 1}: ${score} segundos. `;
     });
 
-    highScoresMessage += "Fin de la lista de posiciones"
+    highScoresMessage += "Fin de la lista de posiciones";
 
     const msg = new SpeechSynthesisUtterance(highScoresMessage);
     speechSynthesis.speak(msg);
@@ -412,9 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
   juegito2Button.addEventListener("mouseover", () =>
     announceCellState(juegito2Button)
   );
-  manual.addEventListener("mouseover", () =>
-    announceCellState(manual)
-  );
+  manual.addEventListener("mouseover", () => announceCellState(manual));
   clearButton.addEventListener("click", clearListConfirmation);
   checkStatusButton.addEventListener("click", checkGameStatus);
   restartButton.addEventListener("click", restartConfirmation);

@@ -74,18 +74,7 @@
       border-radius: 8px;
       box-shadow: 0 4px 8px var(--sombra);
   }
-  
-  .containerJuegosManual {
-    text-decoration: none;
-    width: 250px;
-    padding: 0.5rem;
-    background-color: var(--secundario);
-    color: var(--blanco);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px var(--sombra);
-    margin: 2rem;
-    text-transform: uppercase;
-  }
+
   
   #jueguito2{
       background-color: var(--blanco);

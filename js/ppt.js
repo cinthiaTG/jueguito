@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const jueguito2Button = document.getElementById("jueguito2");
   const restartButton = document.getElementById("restart");
   const checkStatusButton = document.getElementById("checkStatus");
+  const manual = document.getElementById("manual");
 
   let playerScore = 0;
   let computerScore = 0;
@@ -47,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Botón para reiniciar puntajes.";
     } else if (element === checkStatusButton) {
       msg.text = "Botón para revisar el marcador de puntos.";
+    }else if (element === manual) {
+      msg.text = "Enlace al manual de usuario.";
     }
 
     speechSynthesis.speak(msg);
@@ -188,6 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Eventos para botones de otros juegos
+  manual.addEventListener("mouseover", () =>
+    announceButtonState(manual)
+  );
   jueguito1Button.addEventListener("mouseover", () =>
     announceButtonState(jueguito1Button)
   );

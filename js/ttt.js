@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const juegito1Button = document.getElementById("jueguito1");
   const juegito2Button = document.getElementById("jueguito2");
+  const manual = document.getElementById("manual");
   const hearAllButton = document.getElementById("hearAll");
   const hearWelcomeButton = document.getElementById("hearWelcome");
   const hearHowToPlayButton = document.getElementById("hearHowToPlay");
@@ -15,10 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
     if (element === juegito1Button) {
-      msg.text = "Jueguito 1, tik-tak-toe.";
-    } else if (element === juegito2Button) {
-      msg.text = "Jueguito 2, piedra, papel o tijeras.";
-    } else if (element === juegito1Button) {
       msg.text = "Jueguito 1, tik-tak-toe.";
     } else if (element === juegito2Button) {
       msg.text = "Jueguito 2, piedra, papel o tijeras.";
@@ -38,7 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Escuchar sección de características del juego.";
     } else if (element === tipsButton) {
       msg.text = "Escuchar sección de recomendaciones y consejos.";
-    }
+    } else if (element === manual) {
+      msg.text = "Volver al jueguito 1 | Tik tak toe";
+    } 
     speechSynthesis.speak(msg);
   }
 

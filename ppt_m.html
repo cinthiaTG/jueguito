@@ -19,21 +19,32 @@
             >Jueguito 2 | Piedra, Papel o Tijeras</a
           >
         </nav>
-      </header>
+    </header>
 
     <main> 
 
         <h2>Manual de Usuario</h2>
+        <div class="dosBotones">
+            <button class="boton" id="hearAll">Escuchar manual completo</button>
+            <button class="boton" id="hearWelcome">Escuchar bienvenida</button>
+        </div>
+        
         <div class="container" style="text-align: justify;">
-            <p>¡Bienvenido a <span style="font-style: italic;">Jueguito 2</span>! Este clásico juego de "Piedra, Papel o Tijera" ha sido diseñado para ofrecer una experiencia divertida, accesible y desafiante para todos. Con una interfaz intuitiva y mensajes de voz integrados, cualquier persona, ya sea con o sin discapacidad visual, puede disfrutar del juego.</p>
+            <p>¡Bienvenido a <span style="font-style: italic;">Jueguito 2 | Piedra, papel o tijeras</span>! Este clásico juego de "Piedra, Papel o Tijera" ha sido diseñado para ofrecer una experiencia divertida, accesible y desafiante para todos. Con una interfaz intuitiva y mensajes de voz integrados, cualquier persona, ya sea con o sin discapacidad visual, puede disfrutar del juego.</p>
         
             <p>A continuación, te explicamos cómo funciona y cómo puedes empezar a jugar.</p>
         </div>
 
         <div>
-            <h2>¿Cómo Jugar?</h2>
+            <h2>
+                ¿Cómo Jugar?
+                <button class="boton" id="hearHowToPlay">Escuchar</button>
+            </h2>
             <div class="container" style="text-align: justify;">
-                <h4>Reglas Básicas</h4>    
+                <h4>
+                    Reglas Básicas
+                    <button class="boton" id="hearBasicRules">Escuchar</button>
+                </h4>   
                 <ol>
                     <li>El objetivo es vencer a la computadora seleccionando una opción que supere la suya según las siguientes reglas:</li>
                     <ul>
@@ -47,7 +58,10 @@
             </div>
 
             <div class="container" style="text-align: justify;">
-                <h4>Navegación por Voz</h4>
+                <h4>
+                    Navegación por Voz
+                    <button class="boton" id="voiceNavigator">Escuchar</button>
+                </h4>
                 <p>Para garantizar una experiencia inclusiva, el juego integra mensajes de voz que te guían en cada etapa. Estos mensajes se activan al:</p>
                 <ul>
                     <li>Seleccionar una opción (Piedra, Papel o Tijera).</li>
@@ -58,7 +72,10 @@
             </div>
 
             <div class="container" style="text-align: justify;">
-                <h4>Interacción y Jugabilidad</h4>    
+                <h4>
+                    Interacción y Jugabilidad
+                    <button class="boton" id="interaction">Escuchar</button>
+                </h4>   
                 <ol>
                     <li>Selecciona una opción: Piedra, Papel o Tijera.</li>
                     <li>La computadora elegirá automáticamente su jugada.</li>
@@ -73,7 +90,10 @@
             </div>
 
             <div class="container" style="text-align: justify;">
-                <h4>Características del Juego</h4>
+                <h4>
+                    Características del Juego
+                    <button class="boton" id="characteristics">Escuchar</button>
+                </h4>
                 <p>
                     <ul>
                         <li><strong>Puntuación Automática:</strong> El sistema lleva un registro automático de los puntos de ambos jugadores.</li>
@@ -85,7 +105,10 @@
             </div>
 
             <div class="container" style="text-align: justify;">
-                <h4>Recomendaciones y Consejos</h4>
+                <h4>
+                    Recomendaciones y Consejos
+                    <button class="boton" id="tips">Escuchar</button>
+                </h4>
                 <ul>
                     <li><strong>Planifica tus Movimientos:</strong> Aunque el juego es de azar, puedes observar patrones en las elecciones de la computadora.</li>
                     <li><strong>Escucha los Mensajes de Voz:</strong> Estos te mantendrán informado del estado del juego y de las jugadas de la computadora.</li>
@@ -95,7 +118,10 @@
             </div>
 
             <div class="container" style="text-align: justify;">
-                <h4>Solución de Problemas</h4>
+                <h4>
+                    Solución de Problemas
+                    <button class="boton" id="solutions">Escuchar</button>
+                </h4>
                 <p>Si experimentas dificultades, considera lo siguiente:</p>
                 <ul>
                     <li><strong>Problema de Audio:</strong> Asegúrate de que el volumen de tu dispositivo esté activado y que la función de voz esté habilitada.</li>
@@ -105,6 +131,21 @@
             </div>
         </div>
     </main>
-    
+
+    <a class="manual" id="manual" href="/ppt.html">
+        <div class="containerJuegosManual">
+          <h1>Volver a jueguito 2 | Piedra, papel o tijeras</h1>
+        </div>
+    </a>
+
+    <script src="/js/ppt_m.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const restartButton = document.getElementById("restart");
   const clearButton = document.getElementById("limpiar");
   const checkStatusButton = document.getElementById("checkStatus");
+  const checkHighScoresButton = document.getElementById("checkHighScores");
   const juegito1Button = document.getElementById("jueguito1");
   const juegito2Button = document.getElementById("jueguito2");
   const timerElement = document.getElementById("time");
@@ -36,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Botón para borrar registros de mejores tiempos.";
     } else if (element === checkStatusButton) {
       msg.text = "Botón para revisar el estado actual de la partida.";
+    } else if (element === checkHighScoresButton) {
+      msg.text = "Botón para escuchar los mejores tiempos registrados.";
     } else if (element === juegito1Button) {
       msg.text = "Jueguito 1, tik-tak-toe.";
     } else if (element === juegito2Button) {
@@ -123,13 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (winningCombo) {
       gameActive = false;
       winningCombo.forEach((idx) => cells[idx].classList.add("winner"));
-      messageElement.textContent = `Acaba de ganar, tiempo total del juego: ${timer} segundos!`;
+      messageElement.textContent = `Acaba de ganar, tiempo total de la partida: ${timer} segundos!`;
       clearInterval(interval);
       saveHighScore(timer);
 
       // Anuncio de victoria
       const msg = new SpeechSynthesisUtterance(
-        `Acaba de ganar, tiempo total del juego: ${timer} segundos`
+        `Acaba de ganar, tiempo total de la partida: ${timer} segundos`
       );
       speechSynthesis.speak(msg);
       return;
@@ -174,12 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
       gameActive = false;
       winningCombo.forEach((idx) => cells[idx].classList.add("winner"));
 
-      messageElement.textContent = `La computadora ganó, tiempo total del juego: ${timer} segundos!`;
+      messageElement.textContent = `La computadora ganó, tiempo total de la partida: ${timer} segundos!`;
       clearInterval(interval);
 
       // Anuncio de victoria de la computadora
       const msg = new SpeechSynthesisUtterance(
-        `La computadora ganó, tiempo total del juego: ${timer} segundos`
+        `La computadora ganó, tiempo total de la partida: ${timer} segundos`
       );
       speechSynthesis.speak(msg);
       return;
@@ -230,13 +233,19 @@ document.addEventListener("DOMContentLoaded", () => {
     displayHighScores();
   }
 
-  // Función para revisar el estado actual del juego
+  // Función para revisar el estado actual de la partida
   function checkGameStatus() {
     const isBoardEmpty = board.every((cell) => cell === null);
     if (isBoardEmpty) {
-      const msg = new SpeechSynthesisUtterance("No es posible verificar el estado de la partida, no ha iniciado una partida");
+      const msg = new SpeechSynthesisUtterance(
+        "No es posible verificar el estado de la partida, no ha iniciado una partida. Presione enter para confirmar"
+      );
       speechSynthesis.speak(msg);
-      
+      msg.onend = () => {
+        alert(
+          "No es posible verificar el estado de la partida, no ha iniciado una partida."
+        );
+      };
     } else {
       const winningCombo = checkWinner();
       let gameStatusMessage = `El tiempo al presionar el botón fue de ${timer} segundos.`;
@@ -245,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         gameStatusMessage = messageElement.textContent;
         return;
       }
-      
+
       const occupiedCells = board
         .map((value, index) => (value ? `Casilla ${index}: ${value}` : null))
         .filter((item) => item !== null)
@@ -265,9 +274,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function clearListConfirmation() {
     if (highScoresList.innerHTML.trim() === "") {
       const msg = new SpeechSynthesisUtterance(
-        "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro"
+        "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro. Presione enter para confirmar"
       );
       speechSynthesis.speak(msg);
+      msg.onend = () => {
+        alert(
+          "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro"
+        );
+      };
       return;
     }
     const msg = new SpeechSynthesisUtterance(
@@ -307,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       };
       return;
-    } else if ((messageElement.textContent = "")) {
+    } else if (!(messageElement.textContent = "" )) {
       initialiceGame();
       const msg = new SpeechSynthesisUtterance("Partida reiniciada con éxito.");
       speechSynthesis.speak(msg);
@@ -340,6 +354,34 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  function checkHighScores() {
+    const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+
+    if (highScores.length === 0) {
+      const msg = new SpeechSynthesisUtterance(
+        "No hay mejores tiempos registrados hasta el momento."
+      );
+      speechSynthesis.speak(msg);
+      msg.onend = () => {
+        alert("No hay mejores tiempos registrados hasta el momento.");
+      };
+      return;
+    }
+
+    const sortedHighScores = [...highScores].sort((a, b) => b - a); // Orden descendiente
+    let highScoresMessage =
+      "Los mejores tiempos registrados en orden descendente son: ";
+
+    sortedHighScores.forEach((score, index) => {
+      highScoresMessage += `Posición ${index + 1}: ${score} segundos. `;
+    });
+
+    highScoresMessage += "Fin de la lista de posiciones"
+
+    const msg = new SpeechSynthesisUtterance(highScoresMessage);
+    speechSynthesis.speak(msg);
+  }
+
   // Agregar eventos a las casillas
   cells.forEach((cell) => {
     cell.addEventListener("mouseover", () => announceCellState(cell));
@@ -356,6 +398,9 @@ document.addEventListener("DOMContentLoaded", () => {
   checkStatusButton.addEventListener("mouseover", () =>
     announceCellState(checkStatusButton)
   );
+  checkHighScoresButton.addEventListener("mouseover", () =>
+    announceCellState(checkHighScoresButton)
+  );
   juegito1Button.addEventListener("mouseover", () =>
     announceCellState(juegito1Button)
   );
@@ -365,6 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
   clearButton.addEventListener("click", clearListConfirmation);
   checkStatusButton.addEventListener("click", checkGameStatus);
   restartButton.addEventListener("click", restartConfirmation);
+  checkHighScoresButton.addEventListener("click", checkHighScores);
 
   // Inicializar
   initialiceGame();

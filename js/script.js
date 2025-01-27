@@ -30,9 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
         msg.text = `La casilla ${element.dataset.index} está vacía.`;
       }
     } else if (element === restartButton) {
-      msg.text = "Botón de reiniciar.";
+      msg.text = "Botón para reiniciar partida.";
     } else if (element === clearButton) {
-      msg.text = "Botón de borrar registros.";
+      msg.text = "Botón para borrar registros de mejores tiempos.";
     } else if (element === checkStatusButton) {
       msg.text = "Botón para revisar el estado actual de la partida.";
     } else if (element === juegito1Button) {
@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para iniciar el juego
   function startGame() {
+    const msg = new SpeechSynthesisUtterance('Se ha iniciado una nueva partida');
+    speechSynthesis.speak(msg);
+
     board.fill(null);
     cells.forEach((cell) => {
       cell.textContent = "";
@@ -200,6 +203,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para borrar los mejores tiempos
   function clearHighScores() {
+    const msg = new SpeechSynthesisUtterance('Ha borrado todos los registros existentes de mejores tiempos');
+    speechSynthesis.speak(msg);
+
     localStorage.removeItem("highScores");
     displayHighScores();
   }

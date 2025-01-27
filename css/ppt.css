@@ -153,10 +153,33 @@ main {
   transform: scale(0.95);
 }
 
+.boton {
+  background-color: var(--primario);
+  color: var(--blanco);
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 1rem 0.5rem;
+}
+
+.boton:hover {
+  background-color: var(--secundario);
+  transform: translateY(-10px);
+}
+
+.boton:active {
+  transform: scale(0.8);
+}
+
 /* High Scores */
 .high-scores-container {
-  width: 300px;
-  padding: 1.5rem;
+  width: 400px;
+  padding: 2rem;
   background-color: var(--blanco);
   border-radius: 8px;
   box-shadow: 0 4px 8px var(--sombra);
@@ -184,8 +207,8 @@ main {
 }
 
 .image img {
-  width: 200px;
-  height: 170px;
+  width: 255px;
+  height: 225px;
 }
 
 .derecha {
@@ -203,4 +226,11 @@ main {
   font-size: 1.9rem;
   font-weight: 700;
   color: var(--primario);
+  padding: 10px;
+}
+
+.high-scores td {
+  font-size: 1.9rem;
+  font-weight: 300;
+  color: var(--oscuro);
 }

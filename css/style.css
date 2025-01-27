@@ -81,6 +81,17 @@ nav a {
   box-shadow: 0 4px 8px var(--sombra);
 }
 
+.containerJuegosManual {
+  text-decoration: none;
+  width: 250px;
+  padding: 0.5rem;
+  background-color: var(--secundario);
+  color: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--sombra);
+  margin: 2rem;
+}
+
 #jueguito1{
     background-color: var(--blanco);
     color: var(--primario);
@@ -114,7 +125,7 @@ main {
 /* Container */
 .container {
   background-color: var(--blanco);
-  max-width: 600px;
+  max-width: 800px;
   margin: 2rem;
   padding: 2rem;
   border-radius: 8px;
@@ -123,6 +134,7 @@ main {
   text-align: center;
   flex: 1;
 }
+
 
 .high-scores-container {
   width: 300px;

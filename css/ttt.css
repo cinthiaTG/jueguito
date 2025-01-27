@@ -1,0 +1,274 @@
+/*colores primarios del juego solo puse ejemplos pero los pueden cambiar*/
+:root {
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #a007ff;
+    --secundario: #00a783;
+    --fondos: #f8f1f8;
+    --gris: #3c3c3c;
+    --sombra: rgba(0, 0, 0, 0.1);
+    --borde: #e0e0e0;
+  }
+  
+  .html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-size: 16px;
+    font-family: "Krub", sans-serif;
+    color: var(--oscuro);
+    background-color: var(--fondos);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center; 
+  }
+  
+  /* Header */
+  header {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 2px 4px var(--sombra);
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  
+  header h1 {
+    text-transform: uppercase;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+  
+  nav a {
+    text-decoration: none;
+  }
+  
+  .containerJuegos {
+    width: 300px;
+    padding: 0.5rem;
+    background-color: var(--secundario);
+    color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+  }
+  
+  .containerJuegosManual {
+    text-decoration: none;
+    width: 250px;
+    padding: 0.5rem;
+    background-color: var(--secundario);
+    color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+    margin: 2rem;
+  }
+  
+  #jueguito1{
+      background-color: var(--blanco);
+      color: var(--primario);
+  }
+  
+  .juegos {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 2px 4px var(--sombra);
+  }
+  
+  .juego {
+    font-size: 24px;
+    font-weight: 700;
+    /*text-transform: uppercase;*/
+    margin: 0;
+  }
+  
+  main {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+    width: 100%;
+    gap: 2rem; 
+  }
+  
+  /* Container */
+  .container {
+    background-color: var(--blanco);
+    max-width: 800px;
+    margin: 2rem;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+    border: 1px solid var(--borde);
+    text-align: center; 
+    flex: 1;
+  }
+  
+  .container p {
+    margin-bottom: 1rem; /* Espacio entre párrafos */
+  }
+  
+  .high-scores-container {
+    width: 300px;
+    padding: 1rem;
+    margin-left: 0;
+    margin: 3rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 300px;
+  }
+  
+  .celda {
+    width: 100%; /* Asegura que las celdas se ajusten al contenedor */
+    height: 100px; 
+    background-color: var(--secundario);
+    color: var(--blanco);
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .celda:hover {
+    background-color: var(--primario);
+    transform: scale(1.1);
+  }
+  
+  .celda:active {
+    transform: scale(0.8);
+  }
+  
+  .boton {
+    background-color: var(--primario);
+    color: var(--blanco);
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 1rem 0.5rem;
+  }
+  
+  .boton:hover {
+    background-color: var(--secundario);
+    transform: translateY(-10px);
+  }
+  
+  .boton:active {
+    transform: scale(0.8);
+  }
+  
+  /* Timer and Messages */
+  .timer,
+  .message {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--oscuro);
+  }
+  
+  /* High Scores */
+  .high-scores {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    color: var(--oscuro);
+  }
+  
+  .high-scores li {
+    font-weight: 600;
+    color: var(--blanco);
+    background-color: var(--secundario);
+    padding: 0.8rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px var(--sombra);
+  }
+  
+  .high-scores li:hover {
+    background-color: var(--primario);
+    transform: scale(1.05);
+  }
+  
+  h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--primario);
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--primario);
+    padding-bottom: 0.5rem;
+  }
+  
+  h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primario);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    padding-left: 1rem;
+    position: relative;
+  }
+  
+  h4::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 5px;
+    height: 50%;
+    background-color: var(--primario);
+    transform: translateY(-50%);
+  }
+  
+  

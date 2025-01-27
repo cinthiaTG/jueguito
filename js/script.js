@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerElement = document.getElementById("time");
   const highScoresList = document.getElementById("highScores");
   const messageElement = document.getElementById("message");
+  const manual = document.getElementById("manual");
 
   let board = Array(9).fill(null);
   let currentPlayer = "X"; // Player is "X", Computer is "O"
@@ -43,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Jueguito 1, tik-tak-toe.";
     } else if (element === juegito2Button) {
       msg.text = "Jueguito 2, piedra, papel o tijeras.";
+    } else if (element === manual) {
+      msg.text = "Enlace al manual de usuario.";
     }
 
     speechSynthesis.speak(msg);
@@ -321,7 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       };
       return;
-    } else if (!(messageElement.textContent = "" )) {
+    } else if (!(messageElement.textContent == "") || timer <= 0) {
+      console.log(messageElement.textContent);
+      
       initialiceGame();
       const msg = new SpeechSynthesisUtterance("Partida reiniciada con éxito.");
       speechSynthesis.speak(msg);
@@ -368,9 +373,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const sortedHighScores = [...highScores].sort((a, b) => b - a); // Orden descendiente
+    const sortedHighScores = [...highScores].sort((a, b) => a - b); // Orden descendiente
     let highScoresMessage =
-      "Los mejores tiempos registrados en orden descendente son: ";
+      "Los mejores tiempos registrados del primero al último son: ";
 
     sortedHighScores.forEach((score, index) => {
       highScoresMessage += `Posición ${index + 1}: ${score} segundos. `;
@@ -406,6 +411,9 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   juegito2Button.addEventListener("mouseover", () =>
     announceCellState(juegito2Button)
+  );
+  manual.addEventListener("mouseover", () =>
+    announceCellState(manual)
   );
   clearButton.addEventListener("click", clearListConfirmation);
   checkStatusButton.addEventListener("click", checkGameStatus);

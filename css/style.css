@@ -70,6 +70,7 @@ nav {
 
 nav a {
   text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .containerJuegos {
@@ -81,20 +82,19 @@ nav a {
   box-shadow: 0 4px 8px var(--sombra);
 }
 
-.containerJuegosManual {
-  text-decoration: none;
-  width: 250px;
-  padding: 0.5rem;
-  background-color: var(--secundario);
-  color: var(--blanco);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px var(--sombra);
-  margin: 2rem;
+#jueguito1 {
+  background-color: var(--blanco);
+  color: var(--primario);
 }
 
-#jueguito1{
-    background-color: var(--blanco);
-    color: var(--primario);
+#jueguito2:hover {
+  background-color: var(--blanco);
+  color: var(--primario);
+  transform: scale(1.1);
+}
+
+#jueguito2:active {
+  transform: scale(0.8);
 }
 
 .juegos {
@@ -134,7 +134,6 @@ main {
   text-align: center;
   flex: 1;
 }
-
 
 .high-scores-container {
   width: 300px;
@@ -198,6 +197,30 @@ main {
 }
 
 .boton:active {
+  transform: scale(0.8);
+}
+
+#manual {
+  background-color: var(--primario);
+  color: var(--blanco);
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin: 1rem 0.5rem;
+  text-decoration: none;
+}
+
+#manual:hover {
+  background-color: var(--secundario);
+  transform: translateY(-10px);
+}
+
+#manual:active {
   transform: scale(0.8);
 }
 

@@ -62,17 +62,18 @@ nav {
   margin-right: 25%;
 }
 
-nav a{
-    text-decoration: none;
+nav a {
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .containerJuegos {
-    width: 300px;
-    padding: 0.5rem;
-    background-color: var(--secundario);
-    color: var(--blanco);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px var(--sombra);
+  width: 300px;
+  padding: 0.5rem;
+  background-color: var(--secundario);
+  color: var(--blanco);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px var(--sombra);
 }
 .containerJuegosManual {
   text-decoration: none;
@@ -85,10 +86,22 @@ nav a{
   margin: 2rem;
 }
 
-#jueguito2{
-    background-color: var(--blanco);
-    color: var(--primario);
+#jueguito2 {
+  background-color: var(--blanco);
+  color: var(--primario);
 }
+
+
+#jueguito1:hover {
+  background-color: var(--blanco);
+  color: var(--primario);
+  transform: scale(1.1);
+}
+
+#jueguito1:active {
+  transform: scale(0.8);
+}
+
 
 /* Juegos Section */
 .juegos {

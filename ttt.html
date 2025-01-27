@@ -1,75 +1,141 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual - Jueguito</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual de usuario - Jueguito 1</title>
     <link rel="stylesheet" href="css/ttt.css" />
-</head>
-<body>
-    
+  </head>
+  <body>
     <header class="juegos">
-        <h1>Jueguitos</h1>
-  
-        <nav>
-          <a class="juego containerJuegos" id="jueguito1" href="/index.html">Jueguito 1</a>
-          <a class="juego containerJuegos" id="jueguito2" href="/ppt.html">Jueguito 2</a>
-        </nav>
+      <h1>Jueguitos</h1>
+
+      <nav>
+        <a class="juego containerJuegos" id="jueguito1" href="/index.html"
+          >Jueguito 1 | Tic-tac-toe</a
+        >
+        <a class="juego containerJuegos" id="jueguito2" href="/ppt.html"
+          >Jueguito 2 | Piedra, Papel o Tijeras</a
+        >
+      </nav>
     </header>
 
-    <main> 
+    <main>
+      <h2>Manual de Usuario</h2>
+      <button class="boton" id="hearAll">Escuchar manual completo</button>
+      <div class="container" style="text-align: justify">
+        <p>
+          ¡Bienvenido a <span style="font-style: italic">Jueguito 1</span>! Este
+          es un clásico juego de tres en raya (también conocido como gato),
+          diseñado especialmente para personas ciegas, con integración de
+          mensajes de voz que facilitan la navegación y el juego. Aunque está
+          pensado para ser accesible, cualquier persona puede disfrutarlo, ya
+          sea con o sin discapacidad visual.
+        </p>
 
-        <h2>Manual de Usuario</h2>
-        <div class="container" style="text-align: justify;">
-            <p>¡Bienvenido a <span style="font-style: italic; ">Jueguito 1</span>! Este es un clásico juego de tres en raya (también conocido como gato), diseñado especialmente para personas ciegas, con integración de mensajes de voz que facilitan la navegación y el juego. Aunque está pensado para ser accesible, cualquier persona puede disfrutarlo, ya sea con o sin discapacidad visual.</p>
-        
-            <p>El juego busca ser inclusivo, fácil de usar y divertido. A continuación, te mostramos cómo funciona.</p>
-        </div>
-    </div>
+        <p>
+          El juego busca ser inclusivo, fácil de usar y divertido. A
+          continuación, te mostramos cómo funciona.
+        </p>
+      </div>
 
-        <div>
-            <h2>¿Cómo Jugar?</h2>
-            <div class="container" style="text-align: justify;">
-            <h4>Reglas Básicas</h4>    
-            <ol>
-                <li>El objetivo es alinear tres de tus símbolos (X o O) en una fila, columna o diagonal antes de que lo haga la computadora.</li>
-                <li>Tú jugarás como "X" y la computadora como "O".</li>
-                <li>Si el tablero se llena sin un ganador, el juego terminará en empate.</li>
-            </ol>
-        </div>
-
-        <div class="container" style="text-align: justify;">
-            <h4>Navegación por Voz</h4>
-            <p>La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en:</p>
-            <ul>
-                <li>Las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa.</li>
-                <li>Los botones principales, como <span style="font-weight: bold; ">Reiniciar</span> y <span style="font-weight: bold; ">Borrar Registro</span>.</li>
-                <li>Los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.</li>
-            </ul>
-        </div>
-
-        <div class="container" style="text-align: justify;">
-            <h4>Interacción y Jugabilidad</h4>    
-            <ol>
-                <li>Haz clic en una celda vacía para realizar tu movimiento.</li>
-                <li>La computadora jugará automáticamente después de ti.</li>
-                <li>Los mensajes de voz te informarán sobre el estado del tablero y los movimientos de la computadora.</li>
-                <li>Al finalizar la partida, se anunciará el resultado y podrás hacer clic opciones para reiniciar el juego o borrar tu registro de tiempos.</li>
-            </ol>
+      <div>
+        <h2>¿Cómo Jugar?</h2>
+        <div class="container" style="text-align: justify">
+          <h4>Reglas Básicas</h4>
+          <ol>
+            <li>
+              El objetivo es alinear tres de tus símbolos (X o O) en una fila,
+              columna o diagonal antes de que lo haga la computadora.
+            </li>
+            <li>Tú jugarás como "X" y la computadora como "O".</li>
+            <li>
+              Si el tablero se llena sin un ganador, el juego terminará en
+              empate.
+            </li>
+          </ol>
         </div>
 
-        <div class="container" style="text-align: justify;">
-            <h4>Características del Juego</h4>
-            <p>Para los amantes de los retos, el juego incluye un temporizador que mide cuánto tiempo te lleva completar cada partida. Si logras ganar, el tiempo de la partida se guardará automáticamente en un historial, así podrás desafiarte a ti mismo y tratar de superarlo en futuras partidas. Pero si deseas comenzar desde cero o simplemente limpiar ese historial, puedes hacerlo fácilmente utilizando la opción <span style="font-weight: bold; ">Borrar Registro</span>.</p>
+        <div class="container" style="text-align: justify">
+          <h4>Navegación por Voz</h4>
+          <p>
+            La aplicación te guiará con mensajes de voz en cada etapa del juego,
+            brindando una experiencia accesible. Las voces se activan en:
+          </p>
+          <ul>
+            <li>
+              Las celdas del tablero, anunciando si están vacías o ocupadas y,
+              en su caso, qué símbolo las ocupa.
+            </li>
+            <li>
+              Los botones principales, como
+              <span style="font-weight: bold">Reiniciar</span> y
+              <span style="font-weight: bold">Borrar Registro</span>.
+            </li>
+            <li>
+              Los mensajes clave del juego, como el turno de la computadora, el
+              resultado de la partida (ganaste, perdiste o empate) y otros
+              anuncios importantes.
+            </li>
+          </ul>
         </div>
 
-        <div class="container" style="text-align: justify;">
-            <h4>Recomendaciones y Consejos</h4>
-            <p>Para sacar el máximo provecho de <span style="font-style: italic; ">Jueguito</span>, es importante prestar atención a los mensajes de voz. Estos te mantendrán informado sobre el estado actual del tablero y los movimientos de la computadora, ayudándote a planificar tus estrategias. Por ejemplo, si la computadora está a punto de completar una fila, columna o diagonal, puedes bloquear su jugada y dar un giro a la partida.
-            Si en algún momento el juego no responde como esperas, un simple reinicio de la página debería solucionarlo. También recuerda que puedes limpiar el historial de tiempos en cualquier momento con el botón dedicado.</p>
+        <div class="container" style="text-align: justify">
+          <h4>Interacción y Jugabilidad</h4>
+          <ol>
+            <li>Haz clic en una celda vacía para realizar tu movimiento.</li>
+            <li>La computadora jugará automáticamente después de ti.</li>
+            <li>
+              Los mensajes de voz te informarán sobre el estado del tablero y
+              los movimientos de la computadora.
+            </li>
+            <li>
+              Al finalizar la partida, se anunciará el resultado y podrás hacer
+              clic opciones para reiniciar el juego o borrar tu registro de
+              tiempos.
+            </li>
+          </ol>
         </div>
-    </div>
+
+        <div class="container" style="text-align: justify">
+          <h4>Características del Juego</h4>
+          <p>
+            Para los amantes de los retos, el juego incluye un temporizador que
+            mide cuánto tiempo te lleva completar cada partida. Si logras ganar,
+            el tiempo de la partida se guardará automáticamente en un historial,
+            así podrás desafiarte a ti mismo y tratar de superarlo en futuras
+            partidas. Pero si deseas comenzar desde cero o simplemente limpiar
+            ese historial, puedes hacerlo fácilmente utilizando la opción
+            <span style="font-weight: bold">Borrar Registro</span>.
+          </p>
+        </div>
+
+        <div class="container" style="text-align: justify">
+          <h4>Recomendaciones y Consejos</h4>
+          <p>
+            Para sacar el máximo provecho de
+            <span style="font-style: italic">Jueguito</span>, es importante
+            prestar atención a los mensajes de voz. Estos te mantendrán
+            informado sobre el estado actual del tablero y los movimientos de la
+            computadora, ayudándote a planificar tus estrategias. Por ejemplo,
+            si la computadora está a punto de completar una fila, columna o
+            diagonal, puedes bloquear su jugada y dar un giro a la partida. Si
+            en algún momento el juego no responde como esperas, un simple
+            reinicio de la página debería solucionarlo. También recuerda que
+            puedes limpiar el historial de tiempos en cualquier momento con el
+            botón dedicado.
+          </p>
+        </div>
+      </div>
     </main>
+    <a class="manual" id="manual" href="/ttt.html">
+      <div class="containerJuegosManual">
+        <h1>Volver a jueguito 1 | tic tac toe</h1>
+      </div>
+    </a>
     
-</body>
+    <script src="/js/ttt.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </body>
 </html>

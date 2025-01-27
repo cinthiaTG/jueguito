@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameActive = true;
   let timer = 0;
   let interval;
+  let firstMove = true;
 
   // Función que anuncia el estado de la casilla o botón cuando se pasa el mouse por encima
   function announceCellState(element) {
@@ -44,20 +45,28 @@ document.addEventListener("DOMContentLoaded", () => {
     speechSynthesis.speak(msg);
   }
 
-  // Función para iniciar el juego
-  function startGame() {
-    const msg = new SpeechSynthesisUtterance('Se ha iniciado una nueva partida');
-    speechSynthesis.speak(msg);
-
+  function initialiceGame() {
     board.fill(null);
     cells.forEach((cell) => {
       cell.textContent = "";
       cell.classList.remove("winner");
     });
+    firstMove = true;
     currentPlayer = "X";
-    gameActive = true;
     messageElement.textContent = "";
-    timer = 0;
+    timer = -1;
+    clearInterval(interval);
+    updateTimer();
+  }
+
+  // Función para iniciar el juego
+  function startGame() {
+    const msg = new SpeechSynthesisUtterance(
+      "Se ha iniciado una nueva partida"
+    );
+    speechSynthesis.speak(msg);
+    initialiceGame();
+    gameActive = true;
     updateTimer();
     clearInterval(interval);
     interval = setInterval(updateTimer, 1000);
@@ -94,6 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función que maneja el clic en una casilla
   function handleCellClick(e) {
+    if (firstMove) {
+      startGame();
+    }
+    firstMove = false;
+
     const index = e.target.dataset.index;
     if (board[index] || !gameActive) return;
 
@@ -127,7 +141,9 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(interval);
 
       // Anuncio de empate
-      const msg = new SpeechSynthesisUtterance("¡El juego ha resultado en un empate!");
+      const msg = new SpeechSynthesisUtterance(
+        "¡El juego ha resultado en un empate!"
+      );
       speechSynthesis.speak(msg);
       return;
     }
@@ -175,7 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(interval);
 
       // Anuncio de empate
-      const msg = new SpeechSynthesisUtterance("¡El juego ha resultado en un empate!");
+      const msg = new SpeechSynthesisUtterance(
+        "¡El juego ha resultado en un empate!"
+      );
       speechSynthesis.speak(msg);
       return;
     }
@@ -203,7 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para borrar los mejores tiempos
   function clearHighScores() {
-    const msg = new SpeechSynthesisUtterance('Ha borrado todos los registros existentes de mejores tiempos');
+    const msg = new SpeechSynthesisUtterance(
+      "Ha borrado todos los registros existentes de mejores tiempos"
+    );
     speechSynthesis.speak(msg);
 
     localStorage.removeItem("highScores");
@@ -214,13 +234,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkGameStatus() {
     const winningCombo = checkWinner();
     let gameStatusMessage = `El tiempo al presionar el botón fue de ${timer} segundos.`;
-    
+
     const occupiedCells = board
       .map((value, index) => (value ? `Casilla ${index}: ${value}` : null))
       .filter((item) => item !== null)
       .join(", ");
     if (winningCombo) {
-        gameStatusMessage = messageElement.textContent;
+      gameStatusMessage = messageElement.textContent;
     } else if (occupiedCells) {
       gameStatusMessage += `Las casillas ocupadas son: ${occupiedCells}.`;
     } else {
@@ -229,6 +249,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const msg = new SpeechSynthesisUtterance(gameStatusMessage);
     speechSynthesis.speak(msg);
+  }
+
+  // Función para borrar los mejores tiempos con confirmación
+  function clearListConfirmation() {
+    if(highScoresList.innerHTML.trim() === ""){
+      const msg = new SpeechSynthesisUtterance(
+        "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro"
+      );
+      speechSynthesis.speak(msg);
+      return;
+    }
+    const msg = new SpeechSynthesisUtterance(
+      "¿Está seguro de que desea borrar todos los puntajes registrados?  Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
+    );
+    speechSynthesis.speak(msg);
+    let confirmation;
+
+    msg.onend = () => {
+      confirmation = confirm("¿Está seguro de que desea borrar todos los puntajes registrados?");
+
+      if (confirmation) {
+        clearHighScores()
+
+      } else {       
+        const msg = new SpeechSynthesisUtterance(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos"
+        );
+        speechSynthesis.speak(msg);
+      }
+    };   
+  }
+
+  // Función para reiniciar la partida con confirmación
+  function restartConfirmation() {
+    const isBoardEmpty = board.every((cell) => cell === null);
+
+    if (isBoardEmpty) {
+      const msg = new SpeechSynthesisUtterance(
+        "No hay ninguna partida por reiniciar, pruebe iniciando una primero. Presione enter para confirmar"
+      );
+      speechSynthesis.speak(msg);
+      msg.onend = () => {
+        alert("No hay ninguna partida por reiniciar, pruebe iniciando una primero.");
+      };
+      return;
+
+    } else if(messageElement.textContent = ""){
+      initialiceGame();
+      const msg = new SpeechSynthesisUtterance(
+        "Partida reiniciada con éxito."
+      );
+      speechSynthesis.speak(msg);
+      return;
+    }
+
+    const msg = new SpeechSynthesisUtterance(
+      "Hay una partida en curso, ¿Está seguro de que desea reiniciar la partida? Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
+    );
+    speechSynthesis.speak(msg);
+    let confirmation;
+
+    msg.onend = () => {
+      confirmation = confirm("Hay una partida en curso ¿Está seguro de que desea reiniciar la partida?");
+      console.log(confirmation);
+
+      let content = "";
+      if (confirmation) {
+        content = "Ha confirmado el reinicio de la partida. Partida reiniciada";
+        initialiceGame();
+      } else {
+        content = "Ha cancelado la operación de reinicio de la partida.";
+      }
+  
+      // Mensaje de voz según la respuesta del usuario
+      const responseMsg = new SpeechSynthesisUtterance(content);
+      speechSynthesis.speak(responseMsg);
+    };
+
   }
 
   // Agregar eventos a las casillas
@@ -253,12 +351,11 @@ document.addEventListener("DOMContentLoaded", () => {
   juegito2Button.addEventListener("mouseover", () =>
     announceCellState(juegito2Button)
   );
-  restartButton.addEventListener("click", startGame);
-  clearButton.addEventListener("click", clearHighScores);
+  clearButton.addEventListener("click", clearListConfirmation);
   checkStatusButton.addEventListener("click", checkGameStatus);
-  
+  restartButton.addEventListener("click", restartConfirmation);
 
   // Inicializar
-  startGame();
+  initialiceGame();
   displayHighScores();
 });

@@ -45,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (element === jueguito2Button) {
       msg.text = "Jueguito 2, piedra, papel o tijeras.";
     } else if (element === restartButton) {
-      msg.text = "Botón para reiniciar puntajes.";
+      msg.text = "Botón para reiniciar los puntajes en el marcador.";
     } else if (element === checkStatusButton) {
       msg.text = "Botón para revisar el marcador de puntos.";
-    }else if (element === manual) {
+    } else if (element === manual) {
       msg.text = "Enlace al manual de usuario.";
     }
 
@@ -143,23 +143,56 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function restart() {
-    const msgComputadora = new SpeechSynthesisUtterance(
-      "El marcador se ha reiniciado a 0"
-    );
-    speechSynthesis.speak(msgComputadora);
+    if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
+      const msg = new SpeechSynthesisUtterance(
+        "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador. Presione enter para aceptar"
+      );
+      speechSynthesis.speak(msg);
+      msg.onend = () => {
+        alert(
+          "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador."
+        );
+      };
+      return;
+    }
 
-    playerScore = 0;
-    tieScore = 0;
-    computerScore = 0;
-    playerScoreDisplay.textContent = playerScore;
-    tieScoreDisplay.textContent = tieScore;
-    computerScoreDisplay.textContent = computerScore;
+    const msg = new SpeechSynthesisUtterance(
+      "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento? Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
+    );
+    speechSynthesis.speak(msg);
+    let confirmation;
+
+    msg.onend = () => {
+      confirmation = confirm(
+        "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento?"
+      );
+
+      if (confirmation) {
+        playerScore = 0;
+        tieScore = 0;
+        computerScore = 0;
+        playerScoreDisplay.textContent = playerScore;
+        tieScoreDisplay.textContent = tieScore;
+        computerScoreDisplay.textContent = computerScore;
+        const msg = new SpeechSynthesisUtterance(
+          "El marcador se ha reiniciado a 0"
+        );
+        speechSynthesis.speak(msg);
+
+      } else {
+        const msg = new SpeechSynthesisUtterance(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos"
+        );
+        speechSynthesis.speak(msg);
+      }
+    };
+
   }
 
   function checkMatchStats() {
     let matchStatsMessage = "";
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
-        matchStatsMessage = "No se han jugado rondas, el marcador está en ceros"
+      matchStatsMessage = "No se han jugado rondas, el marcador está en ceros";
     } else {
       if (playerScore == 1) {
         matchStatsMessage += `Ha ganado una ronda, `;
@@ -191,36 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Eventos para botones de otros juegos
-  manual.addEventListener("mouseover", () =>
-    announceButtonState(manual)
-  );
+  manual.addEventListener("mouseover", () => announceButtonState(manual));
   jueguito1Button.addEventListener("mouseover", () =>
-    announceButtonState(jueguito1Button)
-  );
-  jueguito1Button.addEventListener("focus", () =>
     announceButtonState(jueguito1Button)
   );
   jueguito2Button.addEventListener("mouseover", () =>
     announceButtonState(jueguito2Button)
   );
-  jueguito2Button.addEventListener("focus", () =>
-    announceButtonState(jueguito2Button)
-  );
   restartButton.addEventListener("mouseover", () =>
-    announceButtonState(restartButton)
-  );
-  restartButton.addEventListener("focus", () =>
     announceButtonState(restartButton)
   );
   checkStatusButton.addEventListener("mouseover", () =>
     announceButtonState(checkStatusButton)
   );
-  checkStatusButton.addEventListener("focus", () =>
-    announceButtonState(checkStatusButton)
-  );
 
   restartButton.addEventListener("click", restart);
-  restartButton.addEventListener("submit", restart);
   checkStatusButton.addEventListener("click", checkMatchStats);
-  checkStatusButton.addEventListener("submit", checkMatchStats);
 });

@@ -1,0 +1,219 @@
+:root {
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #a007ff;
+    --secundario: #00a783;
+    --fondos: #f8f1f8;
+    --gris: #3c3c3c;
+    --sombra: rgba(0, 0, 0, 0.1);
+    --borde: #e0e0e0;
+  }
+  
+  html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    padding: 0;
+  }
+  
+  body {
+    font-size: 1.6rem;
+    font-family: "Krub", sans-serif;
+    color: var(--oscuro);
+    background-color: var(--fondos);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Header */
+  header {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 2px 4px var(--sombra);
+  }
+  
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  header h1 {
+    text-transform: uppercase;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: center;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+  
+  nav a{
+      text-decoration: none;
+  }
+  
+  .containerJuegos {
+      width: 300px;
+      padding: 0.5rem;
+      background-color: var(--secundario);
+      color: var(--blanco);
+      border-radius: 8px;
+      box-shadow: 0 4px 8px var(--sombra);
+  }
+  
+  .containerJuegosManual {
+    text-decoration: none;
+    width: 250px;
+    padding: 0.5rem;
+    background-color: var(--secundario);
+    color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+    margin: 2rem;
+    text-transform: uppercase;
+  }
+  
+  #jueguito2{
+      background-color: var(--blanco);
+      color: var(--primario);
+  }
+  
+  /* Juegos Section */
+  .juegos {
+    background-color: var(--primario);
+    color: var(--blanco);
+    text-align: center;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px var(--sombra);
+  }
+  
+  .juego {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  /* Main Layout */
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    width: 100%;
+    gap: 3rem;
+  }
+  
+  .container {
+    background-color: var(--blanco);
+    max-width: 600px;
+    margin: 2rem;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+    border: 1px solid var(--borde);
+    text-align: center;
+    flex: 1;
+  }
+  
+  /* Board/Grid */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 300px;
+  }
+  
+  .celda {
+    width: 100%; /* Ajusta según el contenedor */
+    height: 10rem;
+    background-color: var(--secundario);
+    color: var(--blanco);
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Efecto al pasar el cursor */
+  .celda:hover {
+    background-color: var(--primario);
+    transform: scale(1.15);
+  }
+  
+  /* Efecto al hacer clic */
+  .celda:active {
+    transform: scale(0.95);
+  }
+  
+  /* High Scores */
+  .high-scores-container {
+    width: 300px;
+    padding: 1.5rem;
+    background-color: var(--blanco);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--sombra);
+  }
+  
+  .high-scores {
+    list-style: none;
+    padding: 0;
+    font-size: 1.4rem;
+    color: var(--oscuro);
+  }
+  
+  #computer-choice-visual {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--primario);
+  }
+  
+  .image {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image img {
+    width: 200px;
+    height: 170px;
+  }
+  
+  .derecha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .high-scores {
+    margin: 0 auto;
+  }
+  
+  .high-scores th {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--primario);
+  }
+  

@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let computerScore = 0;
   let tieScore = 0;
 
-  const choicesArray = ["piedra", "papel", "tijera"];
+  const choicesArray = ["piedra", "papel", "tijeras"];
   const imagePaths = {
     piedra: "img/rock.png",
     papel: "img/paper.png",
-    tijera: "img/scissors.png",
+    tijeras: "img/scissors.png",
   };
 
   function actualizarImagen(choice) {
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   choices.forEach((choice) => {
     choice.addEventListener("click", () => {
+      choices.forEach((btn) => btn.disabled = true);
       const playerChoice = choice.dataset.choice;
       const computerChoice = choicesArray[Math.floor(Math.random() * 3)];
 
@@ -75,9 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
         resultMessageText = "¡Ha empatado esta ronda!";
         tieScore++;
       } else if (
-        (playerChoice === "piedra" && computerChoice === "tijera") ||
+        (playerChoice === "piedra" && computerChoice === "tijeras") ||
         (playerChoice === "papel" && computerChoice === "piedra") ||
-        (playerChoice === "tijera" && computerChoice === "papel")
+        (playerChoice === "tijeras" && computerChoice === "papel")
       ) {
         resultMessageText = "Ha ganado esta ronda!";
         playerScore++;
@@ -86,44 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
         computerScore++;
       }
       // Anuncio de las elecciones
-      const playerMessage = `Ha elegido ${playerChoice}.`;
-      const computerMessage = `La computadora eligió ${computerChoice}.`;
-      speakMessage(playerMessage);
-      speakMessage(computerMessage);
-
-      resultMessage.textContent = resultMessageText;
-      speakMessage(resultMessageText);
-
-      playerScoreDisplay.textContent = playerScore;
-      tieScoreDisplay.textContent = tieScore;
-      computerScoreDisplay.textContent = computerScore;
-    });
-
-    choice.addEventListener("submit", () => {
-      const playerChoice = choice.dataset.choice;
-      const computerChoice = choicesArray[Math.floor(Math.random() * 3)];
-
-      playerChoiceDisplay.textContent = playerChoice;
-      computerChoiceDisplay.textContent = computerChoice;
-
-      actualizarImagen(computerChoice);
-
-      let resultMessageText = "";
-      if (playerChoice === computerChoice) {
-        resultMessageText = "¡Ha empatado esta ronda!";
-        tieScore++;
-      } else if (
-        (playerChoice === "piedra" && computerChoice === "tijera") ||
-        (playerChoice === "papel" && computerChoice === "piedra") ||
-        (playerChoice === "tijera" && computerChoice === "papel")
-      ) {
-        resultMessageText = "Ha ganado esta ronda!";
-        playerScore++;
-      } else {
-        resultMessageText = "Ha perdido esta ronda.";
-        computerScore++;
-      }
-      // Anuncio de las elecciones
+      setTimeout(() => {
+        choices.forEach((btn) => btn.disabled = false);
+      }, 500);
       const playerMessage = `Ha elegido ${playerChoice}.`;
       const computerMessage = `La computadora eligió ${computerChoice}.`;
       speakMessage(playerMessage);
@@ -143,53 +109,71 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function restart() {
+    restartButton.disabled = true;
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
       const msg = new SpeechSynthesisUtterance(
         "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador. Presione enter para aceptar"
       );
       speechSynthesis.speak(msg);
-      msg.onend = () => {
+      
+      setTimeout(() => {
         alert(
           "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador."
         );
-      };
+        restartButton.disabled = false;
+      }, 4000);
+  
       return;
     }
-
+  
     const msg = new SpeechSynthesisUtterance(
       "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento? Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
     );
     speechSynthesis.speak(msg);
-    let confirmation;
-
-    msg.onend = () => {
-      confirmation = confirm(
+  
+    setTimeout(() => {
+      let confirmation = confirm(
         "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento?"
       );
-
+  
       if (confirmation) {
+        speechSynthesis.cancel();
         playerScore = 0;
         tieScore = 0;
         computerScore = 0;
         playerScoreDisplay.textContent = playerScore;
         tieScoreDisplay.textContent = tieScore;
         computerScoreDisplay.textContent = computerScore;
-        const msg = new SpeechSynthesisUtterance(
-          "El marcador se ha reiniciado a 0"
+        
+        const resetMsg = new SpeechSynthesisUtterance(
+          "El marcador se ha reiniciado a 0. Presione enter para confirmar"
         );
-        speechSynthesis.speak(msg);
-
+        speechSynthesis.speak(resetMsg);
+        setTimeout(() => {
+          alert(
+            "El marcador se ha reiniciado a 0."
+          );
+          restartButton.disabled = false;
+        }, 2000);
       } else {
-        const msg = new SpeechSynthesisUtterance(
-          "Ha cancelado la operación de borrar todos los registros de mejores tiempos"
+        speechSynthesis.cancel();
+        const cancelMsg = new SpeechSynthesisUtterance(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar."
         );
-        speechSynthesis.speak(msg);
+        speechSynthesis.speak(cancelMsg);
+        setTimeout(() => {
+          alert(
+            "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+          );
+          restartButton.disabled = false;
+        }, 2000);
       }
-    };
-
+    }, 4000);
   }
+  
 
   function checkMatchStats() {
+    checkStatusButton.disabled = true
     let matchStatsMessage = "";
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
       matchStatsMessage = "No se han jugado rondas, el marcador está en ceros";
@@ -221,6 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const msg = new SpeechSynthesisUtterance(matchStatsMessage);
     speechSynthesis.speak(msg);
+    msg.onboundary = () =>{
+      checkStatusButton.disabled = false;
+    };
   }
 
   // Eventos para botones de otros juegos
@@ -231,10 +218,24 @@ document.addEventListener("DOMContentLoaded", () => {
   jueguito2Button.addEventListener("mouseover", () =>
     announceButtonState(jueguito2Button)
   );
+  manual.addEventListener("focus", () => announceButtonState(manual));
+  jueguito1Button.addEventListener("focus", () =>
+    announceButtonState(jueguito1Button)
+  );
+  jueguito2Button.addEventListener("focus", () =>
+    announceButtonState(jueguito2Button)
+  );
+  
   restartButton.addEventListener("mouseover", () =>
     announceButtonState(restartButton)
   );
   checkStatusButton.addEventListener("mouseover", () =>
+    announceButtonState(checkStatusButton)
+  );
+  restartButton.addEventListener("focus", () =>
+    announceButtonState(restartButton)
+  );
+  checkStatusButton.addEventListener("focus", () =>
     announceButtonState(checkStatusButton)
   );
 

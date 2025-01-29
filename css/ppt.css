@@ -190,6 +190,14 @@ main {
   transform: scale(0.95);
 }
 
+.celda:disabled {
+  background-color: var(--gris);
+  color: var(--blanco);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
+}
+
 .boton {
   background-color: var(--primario);
   color: var(--blanco);
@@ -211,6 +219,14 @@ main {
 
 .boton:active {
   transform: scale(0.8);
+}
+
+.boton:disabled {
+  background-color: var(--gris);
+  color: var(--blanco);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
 }
 
 /* High Scores */

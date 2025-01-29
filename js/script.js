@@ -239,28 +239,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para borrar los mejores tiempos
   function clearHighScores() {
-    const msg = new SpeechSynthesisUtterance(
-      "Ha borrado todos los registros existentes de mejores tiempos"
-    );
-    speechSynthesis.speak(msg);
-
     localStorage.removeItem("highScores");
     displayHighScores();
   }
 
   // Función para revisar el estado actual de la partida
   function checkGameStatus() {
+    checkStatusButton.disabled = true;
     const isBoardEmpty = board.every((cell) => cell === null);
     if (isBoardEmpty) {
       const msg = new SpeechSynthesisUtterance(
         "No es posible verificar el estado de la partida, no ha iniciado una partida. Presione enter para confirmar"
       );
       speechSynthesis.speak(msg);
-      msg.onend = () => {
+
+      setTimeout(() => {
         alert(
           "No es posible verificar el estado de la partida, no ha iniciado una partida."
         );
-      };
+        checkStatusButton.disabled = false;
+      }, 4000);
     } else {
       const winningCombo = checkWinner();
       let gameStatusMessage = `El tiempo al presionar el botón fue de ${timer} segundos.`;
@@ -282,47 +280,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const msg = new SpeechSynthesisUtterance(gameStatusMessage);
       speechSynthesis.speak(msg);
+      msg.onstart = () =>{
+        checkStatusButton.disabled = false;
+      };
     }
   }
 
   // Función para borrar los mejores tiempos con confirmación
   function clearListConfirmation() {
+    clearButton.disabled = true;
     if (highScoresList.innerHTML.trim() === "") {
       const msg = new SpeechSynthesisUtterance(
         "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro. Presione enter para confirmar"
       );
       speechSynthesis.speak(msg);
-      msg.onend = () => {
+
+      setTimeout(() => {
         alert(
-          "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro"
+          "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro."
         );
-      };
+        clearButton.disabled = false;
+      }, 4000);
+
       return;
     }
     const msg = new SpeechSynthesisUtterance(
       "¿Está seguro de que desea borrar todos los mejores tiempos registrados?  Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
     );
     speechSynthesis.speak(msg);
-    let confirmation;
 
-    msg.onend = () => {
-      confirmation = confirm(
+    setTimeout(() => {
+      const confirmation = confirm(
         "¿Está seguro de que desea borrar todos los mejores tiempos registrados?"
       );
 
       if (confirmation) {
         clearHighScores();
-      } else {
+        speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(
-          "Ha cancelado la operación de borrar todos los registros de mejores tiempos"
+          "Ha borrado todos los registros de mejores tiempos. Presione enter para confirmar"
         );
         speechSynthesis.speak(msg);
+        setTimeout(() => {
+          alert(
+            "Ha borrado todos los registros de mejores tiempos."
+          );
+          clearButton.disabled = false;
+        }, 2000);
+      } else {
+        speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar"
+        );
+        speechSynthesis.speak(msg);
+        setTimeout(() => {
+          alert(
+            "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+          );
+          clearButton.disabled = false;
+        }, 2000);
       }
-    };
+    }, 4000);
   }
 
   // Función para reiniciar la partida con confirmación
   function restartConfirmation() {
+    restartButton.disabled = true;
     const isBoardEmpty = board.every((cell) => cell === null);
 
     if (isBoardEmpty) {
@@ -330,11 +353,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "No hay ninguna partida por reiniciar, pruebe iniciando una primero. Presione enter para confirmar"
       );
       speechSynthesis.speak(msg);
-      msg.onend = () => {
+      setTimeout(() => {
         alert(
           "No hay ninguna partida por reiniciar, pruebe iniciando una primero."
         );
-      };
+        restartButton.disabled = false;
+      }, 3000);
+
       return;
     } else if (!(messageElement.textContent == "") || timer <= 0) {
       console.log(messageElement.textContent);
@@ -342,6 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
       initialiceGame();
       const msg = new SpeechSynthesisUtterance("Partida reiniciada con éxito.");
       speechSynthesis.speak(msg);
+      restartButton.disabled = false;
       return;
     }
 
@@ -349,29 +375,41 @@ document.addEventListener("DOMContentLoaded", () => {
       "Hay una partida en curso, ¿Está seguro de que desea reiniciar la partida? Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
     );
     speechSynthesis.speak(msg);
-    let confirmation;
 
-    msg.onend = () => {
-      confirmation = confirm(
-        "Hay una partida en curso ¿Está seguro de que desea reiniciar la partida?"
+    setTimeout(() => {
+      const confirmation = confirm(
+        "Hay una partida en curso, ¿Está seguro de que desea reiniciar la partida?"
       );
       console.log(confirmation);
+      
 
       let content = "";
       if (confirmation) {
-        content = "Ha confirmado el reinicio de la partida. Partida reiniciada";
+        content = "Ha confirmado el reinicio de la partida. Partida reiniciada, presione enter para confirmar";
         initialiceGame();
+        setTimeout(() => {
+          alert(
+            "Ha confirmado el reinicio de la partida, partida reiniciada."
+          );
+          restartButton.disabled = false;
+        }, 2000);
       } else {
-        content = "Ha cancelado la operación de reinicio de la partida.";
+        content = "Ha cancelado la operación de reinicio de la partida. Presione enter para confirmar";
+        setTimeout(() => {
+          alert(
+            "Ha cancelado la operación de reinicio de la partida."
+          );
+          restartButton.disabled = false;
+        }, 2000);
       }
-
-      // Mensaje de voz según la respuesta del usuario
+      speechSynthesis.cancel();
       const responseMsg = new SpeechSynthesisUtterance(content);
       speechSynthesis.speak(responseMsg);
-    };
+    }, 3000);
   }
 
   function checkHighScores() {
+    checkHighScoresButton.disabled = true;
     const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
     if (highScores.length === 0) {
@@ -379,9 +417,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro. Presione enter para confirmar."
       );
       speechSynthesis.speak(msg);
-      msg.onend = () => {
-        alert("No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro.");
-      };
+      setTimeout(() => {
+        alert(
+          "No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro."
+        );
+        checkHighScoresButton.disabled = false;
+      }, 4000);
+  
       return;
     }
 
@@ -397,12 +439,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const msg = new SpeechSynthesisUtterance(highScoresMessage);
     speechSynthesis.speak(msg);
+
+    msg.onboundary = () =>{
+      checkHighScoresButton.disabled = false;
+    };
+    
   }
 
   // Agregar eventos a las casillas
   cells.forEach((cell) => {
     cell.addEventListener("mouseover", () => announceCellState(cell));
+    cell.addEventListener("focus", () => announceCellState(cell));
+
     cell.addEventListener("click", handleCellClick);
+    cell.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            handleCellClick(event);
+        }
+    });
   });
 
   // Eventos para botones
@@ -415,16 +469,36 @@ document.addEventListener("DOMContentLoaded", () => {
   checkStatusButton.addEventListener("mouseover", () =>
     announceCellState(checkStatusButton)
   );
-  checkHighScoresButton.addEventListener("mouseover", () =>
+
+  restartButton.addEventListener("focus", () =>
+    announceCellState(restartButton)
+  );
+  clearButton.addEventListener("focus", () =>
+    announceCellState(clearButton)
+  );
+  checkStatusButton.addEventListener("focus", () =>
+    announceCellState(checkStatusButton)
+  );
+  checkHighScoresButton.addEventListener("focus", () =>
     announceCellState(checkHighScoresButton)
   );
+
   juegito1Button.addEventListener("mouseover", () =>
     announceCellState(juegito1Button)
   );
   juegito2Button.addEventListener("mouseover", () =>
     announceCellState(juegito2Button)
   );
+  juegito1Button.addEventListener("focus", () =>
+    announceCellState(juegito1Button)
+  );
+  juegito2Button.addEventListener("focus", () =>
+    announceCellState(juegito2Button)
+  );
+
   manual.addEventListener("mouseover", () => announceCellState(manual));
+  manual.addEventListener("focus", () => announceCellState(manual));
+  
   clearButton.addEventListener("click", clearListConfirmation);
   checkStatusButton.addEventListener("click", checkGameStatus);
   restartButton.addEventListener("click", restartConfirmation);

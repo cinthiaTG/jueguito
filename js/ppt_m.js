@@ -149,6 +149,44 @@ document.addEventListener("DOMContentLoaded", () => {
     announceCellState(solutionsButton)
   );
 
+  juegito1Button.addEventListener("focus", () =>
+    announceCellState(juegito1Button)
+  );
+  juegito2Button.addEventListener("focus", () =>
+    announceCellState(juegito2Button)
+  );
+  juegito1Button.addEventListener("focus", () =>
+    announceCellState(juegito1Button)
+  );
+  juegito2Button.addEventListener("focus", () =>
+    announceCellState(juegito2Button)
+  );
+  hearAllButton.addEventListener("focus", () =>
+    announceCellState(hearAllButton)
+  );
+  hearWelcomeButton.addEventListener("focus", () =>
+    announceCellState(hearWelcomeButton)
+  );
+  hearHowToPlayButton.addEventListener("focus", () =>
+    announceCellState(hearHowToPlayButton)
+  );
+  hearBasicRulesButton.addEventListener("focus", () =>
+    announceCellState(hearBasicRulesButton)
+  );
+  voiceNavigatorButton.addEventListener("focus", () =>
+    announceCellState(voiceNavigatorButton)
+  );
+  interactionButton.addEventListener("focus", () =>
+    announceCellState(interactionButton)
+  );
+  characteristicsButton.addEventListener("focus", () =>
+    announceCellState(characteristicsButton)
+  );
+  tipsButton.addEventListener("focus", () => announceCellState(tipsButton));
+  solutionsButton.addEventListener("focus", () =>
+    announceCellState(solutionsButton)
+  );
+
   hearAllButton.addEventListener("click", () => {
     hearManual(hearAllButton);
   });
@@ -185,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   manual.addEventListener("mouseover", () => announceCellState(manual));
+  manual.addEventListener("focus", () => announceCellState(manual));
 
   wellcome();
 });

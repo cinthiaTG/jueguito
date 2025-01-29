@@ -38,6 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance();
 
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+
     if (element.classList.contains("choice")) {
       msg.text = `Botón para seleccionar ${element.dataset.choice}`;
     } else if (element === jueguito1Button) {
@@ -57,12 +65,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function speakMessage(message) {
     const msg = new SpeechSynthesisUtterance(message);
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+
     speechSynthesis.speak(msg);
   }
 
   choices.forEach((choice) => {
     choice.addEventListener("click", () => {
-      choices.forEach((btn) => btn.disabled = true);
+      choices.forEach((btn) => (btn.disabled = true));
       const playerChoice = choice.dataset.choice;
       const computerChoice = choicesArray[Math.floor(Math.random() * 3)];
 
@@ -88,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       // Anuncio de las elecciones
       setTimeout(() => {
-        choices.forEach((btn) => btn.disabled = false);
+        choices.forEach((btn) => (btn.disabled = false));
       }, 500);
       const playerMessage = `Ha elegido ${playerChoice}.`;
       const computerMessage = `La computadora eligió ${computerChoice}.`;
@@ -114,28 +131,46 @@ document.addEventListener("DOMContentLoaded", () => {
       const msg = new SpeechSynthesisUtterance(
         "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador. Presione enter para aceptar"
       );
+
+      const voices = speechSynthesis.getVoices();
+      const selectedVoice = voices.find(
+        (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+      );
+      if (selectedVoice) {
+        msg.voice = selectedVoice;
+      }
+
       speechSynthesis.speak(msg);
-      
+
       setTimeout(() => {
         alert(
           "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador."
         );
         restartButton.disabled = false;
       }, 4000);
-  
+
       return;
     }
-  
+
     const msg = new SpeechSynthesisUtterance(
       "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento? Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
     );
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+
     speechSynthesis.speak(msg);
-  
+
     setTimeout(() => {
       let confirmation = confirm(
         "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento?"
       );
-  
+
       if (confirmation) {
         speechSynthesis.cancel();
         playerScore = 0;
@@ -144,15 +179,22 @@ document.addEventListener("DOMContentLoaded", () => {
         playerScoreDisplay.textContent = playerScore;
         tieScoreDisplay.textContent = tieScore;
         computerScoreDisplay.textContent = computerScore;
-        
+
         const resetMsg = new SpeechSynthesisUtterance(
           "El marcador se ha reiniciado a 0. Presione enter para confirmar"
         );
+
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(
+          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+        );
+        if (selectedVoice) {
+          msg.voice = selectedVoice;
+        }
+
         speechSynthesis.speak(resetMsg);
         setTimeout(() => {
-          alert(
-            "El marcador se ha reiniciado a 0."
-          );
+          alert("El marcador se ha reiniciado a 0.");
           restartButton.disabled = false;
         }, 2000);
       } else {
@@ -160,6 +202,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const cancelMsg = new SpeechSynthesisUtterance(
           "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar."
         );
+
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(
+          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+        );
+        if (selectedVoice) {
+          msg.voice = selectedVoice;
+        }
+
         speechSynthesis.speak(cancelMsg);
         setTimeout(() => {
           alert(
@@ -170,10 +221,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }, 4000);
   }
-  
 
   function checkMatchStats() {
-    checkStatusButton.disabled = true
+    checkStatusButton.disabled = true;
     let matchStatsMessage = "";
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
       matchStatsMessage = "No se han jugado rondas, el marcador está en ceros";
@@ -204,8 +254,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const msg = new SpeechSynthesisUtterance(matchStatsMessage);
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+
     speechSynthesis.speak(msg);
-    msg.onboundary = () =>{
+    msg.onboundary = () => {
       checkStatusButton.disabled = false;
     };
   }
@@ -225,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
   jueguito2Button.addEventListener("focus", () =>
     announceButtonState(jueguito2Button)
   );
-  
+
   restartButton.addEventListener("mouseover", () =>
     announceButtonState(restartButton)
   );

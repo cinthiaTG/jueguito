@@ -15,6 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function announceCellState(element) {
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance(); // Crea un mensaje de voz
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+
     if (element === juegito1Button) {
       msg.text = "Jueguito 1, tik-tak-toe.";
     } else if (element === juegito2Button) {
@@ -44,6 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function hearManual(element) {
     speechSynthesis.cancel();
     const msg = new SpeechSynthesisUtterance();
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
 
     if (element.id === "hearAll") {
       msg.text = "Manual de usuario.";
@@ -89,6 +106,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const msg = new SpeechSynthesisUtterance(
       "Bienvenido al manual de usuario del jueguito 1 | Tic tac toe"
     );
+
+    const voices = speechSynthesis.getVoices();
+    const selectedVoice = voices.find(
+      (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+    );
+    if (selectedVoice) {
+      msg.voice = selectedVoice;
+    }
+    
     speechSynthesis.speak(msg);
   }
 
@@ -196,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   manual.addEventListener("mouseover", () => announceCellState(manual));
-  manual.addEventListener("focus", () => announceCellState(manual));
 
   wellcome();
 });

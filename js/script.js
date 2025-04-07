@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const highScoresList = document.getElementById("highScores");
   const messageElement = document.getElementById("message");
   const manual = document.getElementById("manual");
+  const vozButton = document.getElementById("voz");
 
   let board = Array(9).fill(null);
   let currentPlayer = "X"; // Player is "X", Computer is "O"
@@ -17,6 +18,60 @@ document.addEventListener("DOMContentLoaded", () => {
   let timer = 0;
   let interval;
   let firstMove = true;
+  let isVoiceActive = true;
+  restartButton.disabled = true;
+
+  // Mapea las teclas numéricas del 1 al 9 a las casillas
+  document.addEventListener("keydown", (event) => {
+    const key = event.key;
+
+    if (key >= "1" && key <= "9") {
+      const index = parseInt(key) - 1; // Mapea 1-9 a 0-8 para los índices
+      const cell = cells[index];
+
+      if (!cell.textContent) {
+        handleCellClick({ target: cell });
+      }
+    }
+  });
+
+  // Función de clic en la celda
+  function handleCellClick(event) {
+    const cell = event.target;
+    if (!cell.textContent) {
+      cell.textContent = currentPlayer; // Marca la casilla con X o O
+      switchPlayer();
+    }
+  }
+
+  vozButton.addEventListener("click", function () {
+    isVoiceActive = !(localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+      checkStatusButton.disabled = true;
+      checkHighScoresButton.disabled = true;
+    } else {
+      vozButton.textContent = "Desactivar voz";
+      checkStatusButton.disabled = false;
+      checkHighScoresButton.disabled = false;
+    }
+
+    if (isVoiceActive) {
+      speechSynthesis.cancel();
+    }
+  });
+
+  function checkVozButton() {
+    isVoiceActive = (localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+    } else {
+      vozButton.textContent = "Desactivar voz";
+    }
+  }
 
   // Función que anuncia el estado de la casilla o botón cuando se pasa el mouse por encima
   function announceCellState(element) {
@@ -34,11 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (element.classList.contains("celda")) {
       if (textContent === "O") {
-        msg.text = `La casilla ${element.dataset.index} está ocupada por O.`;
+        msg.text = `La casilla ${
+          parseInt(element.dataset.index) + 1
+        } está ocupada por O.`;
       } else if (textContent === "X") {
-        msg.text = `La casilla ${element.dataset.index} está ocupada por X.`;
+        msg.text = `La casilla ${
+          parseInt(element.dataset.index) + 1
+        } está ocupada por X.`;
       } else {
-        msg.text = `La casilla ${element.dataset.index} está vacía.`;
+        msg.text = `La casilla ${
+          parseInt(element.dataset.index) + 1
+        } está vacía.`;
       }
     } else if (element === restartButton) {
       msg.text = "Botón para reiniciar partida.";
@@ -55,8 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (element === manual) {
       msg.text = "Enlace al manual de usuario.";
     }
-
     speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
   }
 
   function initialiceGame() {
@@ -75,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para iniciar el juego
   function startGame() {
+    restartButton.disabled = false;
     const msg = new SpeechSynthesisUtterance(
       "Se ha iniciado una nueva partida"
     );
@@ -87,6 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.voice = selectedVoice;
     }
     speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
     initialiceGame();
     gameActive = true;
     updateTimer();
@@ -116,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (const combo of winningCombinations) {
       const [a, b, c] = combo;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        restartButton.disabled = false;
         return combo;
       }
     }
@@ -137,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.target.textContent = currentPlayer;
 
     const msgComputadora = new SpeechSynthesisUtterance(
-      `Colocó X en la casilla ${index}.`
+      `Colocó X en la casilla ${parseInt(index) + 1}.`
     );
 
     const voices = speechSynthesis.getVoices();
@@ -148,6 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
       msgComputadora.voice = selectedVoice;
     }
     speechSynthesis.speak(msgComputadora);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
 
     const winningCombo = checkWinner();
     if (winningCombo) {
@@ -169,7 +240,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+        setTimeout(() => {
+          alert(
+            `Acaba de ganar, tiempo total de la partida: ${timer} segundos`
+          );
+        }, 100);
+      }
       return;
     }
 
@@ -190,7 +270,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+        setTimeout(() => {
+          alert(
+            `¡El juego ha resultado en un empate! Tiempo total de la partida: ${timer} segundos`
+          );
+        }, 100);
+      }
+      restartButton.disabled = false;
       return;
     }
 
@@ -211,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cells[randomIndex].textContent = currentPlayer;
 
     const msgComputadora = new SpeechSynthesisUtterance(
-      `La computadora colocó O en la casilla ${randomIndex}.`
+      `La computadora colocó O en la casilla ${randomIndex + 1}.`
     );
 
     const voices = speechSynthesis.getVoices();
@@ -221,7 +311,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedVoice) {
       msgComputadora.voice = selectedVoice;
     }
+
     speechSynthesis.speak(msgComputadora);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
 
     const winningCombo = checkWinner();
     if (winningCombo) {
@@ -243,7 +337,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+        setTimeout(() => {
+          alert(
+            `La computadora ganó, tiempo total de la partida: ${timer} segundos!`
+          );
+        }, 100);
+      }
       return;
     }
 
@@ -264,7 +367,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+      }
       return;
     }
 
@@ -304,7 +411,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selectedVoice) {
           msg.voice = selectedVoice;
         }
+
         speechSynthesis.speak(msg);
+        if (!isVoiceActive) {
+          speechSynthesis.cancel();
+        }
       });
     });
   }
@@ -331,14 +442,23 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
-      speechSynthesis.speak(msg);
 
-      setTimeout(() => {
+      speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         alert(
-          "No es posible verificar el estado de la partida, no ha iniciado una partida."
+          "No es posible verificar el estado de la partida, el estado de la partida solo puede ser verificado con la voz de guía."
         );
         checkStatusButton.disabled = false;
-      }, 4000);
+      } else {
+        setTimeout(() => {
+          alert(
+            "No es posible verificar el estado de la partida, no ha iniciado una partida."
+          );
+          checkStatusButton.disabled = false;
+        }, 4000);
+      }
+      checkStatusButton.disabled = false;
     } else {
       const winningCombo = checkWinner();
       let gameStatusMessage = `El tiempo al presionar el botón fue de ${timer} segundos.`;
@@ -349,7 +469,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const occupiedCells = board
-        .map((value, index) => (value ? `Casilla ${index}: ${value}` : null))
+        .map((value, index) =>
+          value ? `Casilla ${parseInt(index) + 1}: ${value}` : null
+        )
         .filter((item) => item !== null)
         .join(", ");
       if (occupiedCells) {
@@ -367,10 +489,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
-      msg.onstart = () => {
-        checkStatusButton.disabled = false;
-      };
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+      } else {
+        msg.onstart = () => {
+          checkStatusButton.disabled = false;
+        };
+      }
     }
   }
 
@@ -389,17 +516,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
-      speechSynthesis.speak(msg);
 
-      setTimeout(() => {
+      speechSynthesis.speak(msg);
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         alert(
           "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro."
         );
         clearButton.disabled = false;
-      }, 4000);
-
+      } else {
+        setTimeout(() => {
+          alert(
+            "No hay registros de mejores tiempos, pruebe ganando una partida para establecer un puesto en el registro."
+          );
+          clearButton.disabled = false;
+        }, 4000);
+      }
       return;
     }
+
     const msg = new SpeechSynthesisUtterance(
       "¿Está seguro de que desea borrar todos los mejores tiempos registrados?  Presione la tecla Enter si es así, de lo contrario presione la tecla escape."
     );
@@ -411,54 +546,88 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedVoice) {
       msg.voice = selectedVoice;
     }
-    speechSynthesis.speak(msg);
 
-    setTimeout(() => {
+    speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
       const confirmation = confirm(
         "¿Está seguro de que desea borrar todos los mejores tiempos registrados?"
       );
 
       if (confirmation) {
         clearHighScores();
-        speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(
-          "Ha borrado todos los registros de mejores tiempos. Presione enter para confirmar"
-        );
-
-        const voices = speechSynthesis.getVoices();
-        const selectedVoice = voices.find(
-          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
-        );
-        if (selectedVoice) {
-          msg.voice = selectedVoice;
-        }
-        speechSynthesis.speak(msg);
-        setTimeout(() => {
-          alert("Ha borrado todos los registros de mejores tiempos.");
-          clearButton.disabled = false;
-        }, 2000);
+        alert("Ha borrado todos los registros de mejores tiempos.");
+        clearButton.disabled = false;
       } else {
-        speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(
-          "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar"
+        alert(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+        );
+        clearButton.disabled = false;
+      }
+    } else {
+      setTimeout(() => {
+        const confirmation = confirm(
+          "¿Está seguro de que desea borrar todos los mejores tiempos registrados?"
         );
 
-        const voices = speechSynthesis.getVoices();
-        const selectedVoice = voices.find(
-          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
-        );
-        if (selectedVoice) {
-          msg.voice = selectedVoice;
-        }
-        speechSynthesis.speak(msg);
-        setTimeout(() => {
-          alert(
-            "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+        if (confirmation) {
+          clearHighScores();
+          speechSynthesis.cancel();
+          const msg = new SpeechSynthesisUtterance(
+            "Ha borrado todos los registros de mejores tiempos. Presione enter para confirmar"
           );
-          clearButton.disabled = false;
-        }, 2000);
-      }
-    }, 4000);
+
+          const voices = speechSynthesis.getVoices();
+          const selectedVoice = voices.find(
+            (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+          );
+          if (selectedVoice) {
+            msg.voice = selectedVoice;
+          }
+
+          speechSynthesis.speak(msg);
+          if (!isVoiceActive) {
+            speechSynthesis.cancel();
+            alert("Ha borrado todos los registros de mejores tiempos.");
+            clearButton.disabled = false;
+          } else {
+            setTimeout(() => {
+              alert("Ha borrado todos los registros de mejores tiempos.");
+              clearButton.disabled = false;
+            }, 2000);
+          }
+        } else {
+          speechSynthesis.cancel();
+          const msg = new SpeechSynthesisUtterance(
+            "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar"
+          );
+
+          const voices = speechSynthesis.getVoices();
+          const selectedVoice = voices.find(
+            (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+          );
+          if (selectedVoice) {
+            msg.voice = selectedVoice;
+          }
+
+          speechSynthesis.speak(msg);
+          if (!isVoiceActive) {
+            speechSynthesis.cancel();
+            alert(
+              "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+            );
+            clearButton.disabled = false;
+          } else {
+            setTimeout(() => {
+              alert(
+                "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+              );
+              clearButton.disabled = false;
+            }, 2000);
+          }
+        }
+      }, 4000);
+    }
   }
 
   // Función para reiniciar la partida con confirmación
@@ -478,13 +647,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
-      setTimeout(() => {
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         alert(
           "No hay ninguna partida por reiniciar, pruebe iniciando una primero."
         );
         restartButton.disabled = false;
-      }, 3000);
+      } else {
+        setTimeout(() => {
+          alert(
+            "No hay ninguna partida por reiniciar, pruebe iniciando una primero."
+          );
+          restartButton.disabled = false;
+        }, 3000);
+      }
 
       return;
     } else if (!(messageElement.textContent == "") || timer <= 0) {
@@ -492,8 +670,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       initialiceGame();
       const msg = new SpeechSynthesisUtterance("Partida reiniciada con éxito.");
+
       speechSynthesis.speak(msg);
-      restartButton.disabled = false;
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
+      }
+      restartButton.disabled = true;
       return;
     }
 
@@ -508,9 +690,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedVoice) {
       msg.voice = selectedVoice;
     }
-    speechSynthesis.speak(msg);
 
-    setTimeout(() => {
+    speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
       const confirmation = confirm(
         "Hay una partida en curso, ¿Está seguro de que desea reiniciar la partida?"
       );
@@ -518,33 +701,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let content = "";
       if (confirmation) {
-        content =
-          "Ha confirmado el reinicio de la partida. Partida reiniciada, presione enter para confirmar";
         initialiceGame();
-        setTimeout(() => {
-          alert("Ha confirmado el reinicio de la partida, partida reiniciada.");
-          restartButton.disabled = false;
-        }, 2000);
+        alert("Ha confirmado el reinicio de la partida, partida reiniciada.");
+        restartButton.disabled = true;
       } else {
-        content =
-          "Ha cancelado la operación de reinicio de la partida. Presione enter para confirmar";
-        setTimeout(() => {
-          alert("Ha cancelado la operación de reinicio de la partida.");
-          restartButton.disabled = false;
-        }, 2000);
+        alert("Ha cancelado la operación de reinicio de la partida.");
+        restartButton.disabled = false;
       }
-      speechSynthesis.cancel();
-      const responseMsg = new SpeechSynthesisUtterance(content);
+    } else {
+      setTimeout(() => {
+        const confirmation = confirm(
+          "Hay una partida en curso, ¿Está seguro de que desea reiniciar la partida?"
+        );
+        console.log(confirmation);
 
-      const voices = speechSynthesis.getVoices();
-      const selectedVoice = voices.find(
-        (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
-      );
-      if (selectedVoice) {
-        msg.voice = selectedVoice;
-      }
-      speechSynthesis.speak(responseMsg);
-    }, 3000);
+        let content = "";
+        if (confirmation) {
+          content =
+            "Ha confirmado el reinicio de la partida. Partida reiniciada, presione enter para confirmar";
+          initialiceGame();
+          if (isVoiceActive) {
+            setTimeout(() => {
+              alert(
+                "Ha confirmado el reinicio de la partida, partida reiniciada."
+              );
+              restartButton.disabled = false;
+            }, 2000);
+          } else {
+            alert(
+              "Ha confirmado el reinicio de la partida, partida reiniciada."
+            );
+            restartButton.disabled = false;
+          }
+        } else {
+          content =
+            "Ha cancelado la operación de reinicio de la partida. Presione enter para confirmar";
+
+          if (isVoiceActive) {
+            setTimeout(() => {
+              alert("Ha cancelado la operación de reinicio de la partida.");
+              restartButton.disabled = false;
+            }, 2000);
+          } else {
+            alert("Ha cancelado la operación de reinicio de la partida.");
+            restartButton.disabled = false;
+          }
+        }
+        speechSynthesis.cancel();
+        const responseMsg = new SpeechSynthesisUtterance(content);
+
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(
+          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+        );
+        if (selectedVoice) {
+          msg.voice = selectedVoice;
+        }
+
+        speechSynthesis.speak(responseMsg);
+        if (!isVoiceActive) {
+          speechSynthesis.cancel();
+        }
+      }, 3000);
+    }
   }
 
   function checkHighScores() {
@@ -563,14 +782,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedVoice) {
         msg.voice = selectedVoice;
       }
+
       speechSynthesis.speak(msg);
-      setTimeout(() => {
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         alert(
           "No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro."
         );
         checkHighScoresButton.disabled = false;
-      }, 4000);
-
+      } else {
+        setTimeout(() => {
+          alert(
+            "No hay mejores tiempos registrados hasta el momento, pruebe ganando una partida para establecer un puesto en el registro."
+          );
+          checkHighScoresButton.disabled = false;
+        }, 4000);
+      }
       return;
     }
 
@@ -593,11 +820,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedVoice) {
       msg.voice = selectedVoice;
     }
-    speechSynthesis.speak(msg);
 
-    setTimeout(() => {
+    speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
       checkHighScoresButton.disabled = false;
-    }, 1000);
+    } else {
+      setTimeout(() => {
+        checkHighScoresButton.disabled = false;
+      }, 1000);
+    }
   }
 
   // Agregar eventos a las casillas
@@ -662,4 +894,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicializar
   initialiceGame();
   displayHighScores();
+  checkVozButton();
 });

@@ -11,6 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const characteristicsButton = document.getElementById("characteristics");
   const tipsButton = document.getElementById("tips");
 
+  let isVoiceActive = null;
+
+  function checkVozButton() {
+    isVoiceActive = localStorage.getItem("isVoiceActive") === "true";
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+    console.log(isVoiceActive);
+  }
+
   // Función que anuncia el estado de la casilla o botón cuando se pasa el mouse por encima
   function announceCellState(element) {
     speechSynthesis.cancel();
@@ -46,8 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Escuchar sección de recomendaciones y consejos.";
     } else if (element === manual) {
       msg.text = "Volver al jueguito 1 | Tik tak toe";
-    } 
+    }
     speechSynthesis.speak(msg);
+
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
   }
 
   function hearManual(element) {
@@ -64,9 +76,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (element.id === "hearAll") {
       msg.text = "Manual de usuario.";
-      msg.text = " ¡Bienvenido al Jueguito 1 | Tic-tac-toe! Este es un clásico juego de tres en raya (también conocido como gato), diseñado especialmente para personas ciegas, con integración de mensajes de voz que facilitan la navegación y el juego. Aunque está pensado para ser accesible, cualquier persona puede disfrutarlo, ya sea con o sin discapacidad visual.";
-      msg.text = " Reglas Básicas. El objetivo es alinear tres de tus símbolos (X u O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
-      msg.text += " Navegación por voz. La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
+      msg.text =
+        " ¡Bienvenido al Jueguito 1 | Tic-tac-toe! Este es un clásico juego de tres en raya (también conocido como gato), diseñado especialmente para personas ciegas, con integración de mensajes de voz que facilitan la navegación y el juego. Aunque está pensado para ser accesible, cualquier persona puede disfrutarlo, ya sea con o sin discapacidad visual.";
+      msg.text =
+        " Reglas Básicas. El objetivo es alinear tres de tus símbolos (X u O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
+      msg.text +=
+        " Navegación por voz. La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
       msg.text +=
         " Interacción y Jugabilidad. Haz clic en una celda vacía para realizar tu movimiento. La computadora jugará automáticamente después de ti. Los mensajes de voz te informarán sobre el estado del tablero y los movimientos de la computadora. Al finalizar la partida, se anunciará el resultado y podrás hacer clic en opciones para reiniciar el juego o borrar tu registro de tiempos.";
       msg.text +=
@@ -74,10 +89,13 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text +=
         " Recomendaciones y Consejos. Para sacar el máximo provecho del Jueguito 1 | Tic Tac Toe, es importante prestar atención a los mensajes de voz. Estos te mantendrán informado sobre el estado actual del tablero y los movimientos de la computadora, ayudándote a planificar tus estrategias. Por ejemplo, si la computadora está a punto de completar una fila, columna o diagonal, puedes bloquear su jugada y dar un giro a la partida. Si en algún momento el juego no responde como esperas, un simple reinicio de la página debería solucionarlo. También recuerda que puedes limpiar el historial de tiempos en cualquier momento con el botón dedicado.";
     } else if (element.id === "hearWelcome") {
-      msg.text = "¡Bienvenido al Jueguito 1 | Tic-tac-toe! Este es un clásico juego de tres en raya (también conocido como gato), diseñado especialmente para personas ciegas, con integración de mensajes de voz que facilitan la navegación y el juego. Aunque está pensado para ser accesible, cualquier persona puede disfrutarlo, ya sea con o sin discapacidad visual.";
+      msg.text =
+        "¡Bienvenido al Jueguito 1 | Tic-tac-toe! Este es un clásico juego de tres en raya (también conocido como gato), diseñado especialmente para personas ciegas, con integración de mensajes de voz que facilitan la navegación y el juego. Aunque está pensado para ser accesible, cualquier persona puede disfrutarlo, ya sea con o sin discapacidad visual.";
     } else if (element.id === "hearHowToPlay") {
-      msg.text = "Reglas Básicas. El objetivo es alinear tres de tus símbolos (X o O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
-      msg.text += " Navegación por voz. La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
+      msg.text =
+        "Reglas Básicas. El objetivo es alinear tres de tus símbolos (X o O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
+      msg.text +=
+        " Navegación por voz. La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
       msg.text +=
         " Interacción y Jugabilidad. Haz clic en una celda vacía para realizar tu movimiento. La computadora jugará automáticamente después de ti. Los mensajes de voz te informarán sobre el estado del tablero y los movimientos de la computadora. Al finalizar la partida, se anunciará el resultado y podrás hacer clic en opciones para reiniciar el juego o borrar tu registro de tiempos.";
       msg.text +=
@@ -85,9 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text +=
         " Recomendaciones y Consejos. Para sacar el máximo provecho del Jueguito 1 | Tic Tac Toe, es importante prestar atención a los mensajes de voz. Estos te mantendrán informado sobre el estado actual del tablero y los movimientos de la computadora, ayudándote a planificar tus estrategias. Por ejemplo, si la computadora está a punto de completar una fila, columna o diagonal, puedes bloquear su jugada y dar un giro a la partida. Si en algún momento el juego no responde como esperas, un simple reinicio de la página debería solucionarlo. También recuerda que puedes limpiar el historial de tiempos en cualquier momento con el botón dedicado.";
     } else if (element.id === "hearBasicRules") {
-      msg.text = "El objetivo es alinear tres de tus símbolos (X o O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
+      msg.text =
+        "El objetivo es alinear tres de tus símbolos (X o O) en una fila, columna o diagonal antes de que lo haga la computadora. Tú jugarás como 'X' y la computadora como 'O'. Si el tablero se llena sin un ganador, el juego terminará en empate.";
     } else if (element.id === "voiceNavigator") {
-      msg.text = "La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
+      msg.text =
+        "La aplicación te guiará con mensajes de voz en cada etapa del juego, brindando una experiencia accesible. Las voces se activan en: las celdas del tablero, anunciando si están vacías o ocupadas y, en su caso, qué símbolo las ocupa; los botones principales, como Reiniciar y Borrar Registro; los mensajes clave del juego, como el turno de la computadora, el resultado de la partida (ganaste, perdiste o empate) y otros anuncios importantes.";
     } else if (element.id === "interaction") {
       msg.text =
         "Haz clic en una celda vacía para realizar tu movimiento. La computadora jugará automáticamente después de ti. Los mensajes de voz te informarán sobre el estado del tablero y los movimientos de la computadora. Al finalizar la partida, se anunciará el resultado y podrás hacer clic en opciones para reiniciar el juego o borrar tu registro de tiempos.";
@@ -114,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedVoice) {
       msg.voice = selectedVoice;
     }
-    
+
     speechSynthesis.speak(msg);
   }
 
@@ -223,5 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   manual.addEventListener("mouseover", () => announceCellState(manual));
 
-  wellcome();
+  if (isVoiceActive) {
+    wellcome();
+  }
+
+  checkVozButton();
 });

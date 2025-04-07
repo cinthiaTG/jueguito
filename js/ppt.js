@@ -16,10 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const restartButton = document.getElementById("restart");
   const checkStatusButton = document.getElementById("checkStatus");
   const manual = document.getElementById("manual");
+  const vozButton = document.getElementById("voz");
 
   let playerScore = 0;
   let computerScore = 0;
   let tieScore = 0;
+  let isVoiceActive = true;
 
   const choicesArray = ["piedra", "papel", "tijeras"];
   const imagePaths = {
@@ -27,6 +29,39 @@ document.addEventListener("DOMContentLoaded", () => {
     papel: "img/paper.png",
     tijeras: "img/scissors.png",
   };
+
+  if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
+    restartButton.disabled = true;
+  }
+
+  vozButton.addEventListener("click", function () {
+    isVoiceActive = !(localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+      checkStatusButton.disabled = true;
+      checkHighScoresButton.disabled = true;
+    } else {
+      vozButton.textContent = "Desactivar voz";
+      checkStatusButton.disabled = false;
+      checkHighScoresButton.disabled = false;
+    }
+
+    if (isVoiceActive) {
+      speechSynthesis.cancel();
+    }
+  });
+
+  function checkVozButton() {
+    isVoiceActive = (localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+    } else {
+      vozButton.textContent = "Desactivar voz";
+    }
+  }
 
   function actualizarImagen(choice) {
     computerChoiceImg.src = imagePaths[choice];
@@ -61,6 +96,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
   }
 
   function speakMessage(message) {
@@ -75,7 +113,71 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     speechSynthesis.speak(msg);
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
   }
+
+  document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    choices.forEach((btn) => (btn.disabled = true));
+
+    let playerChoice = null;
+    if (key === "1") playerChoice = "piedra";
+    else if (key === "2") playerChoice = "papel";
+    else if (key === "3") playerChoice = "tijeras";
+    else return;
+
+    const computerChoice = choicesArray[Math.floor(Math.random() * 3)];
+
+    playerChoiceDisplay.textContent = playerChoice;
+    computerChoiceDisplay.textContent = computerChoice;
+
+    actualizarImagen(computerChoice);
+
+    let resultMessageText = "";
+    if (playerChoice === computerChoice) {
+      resultMessageText = "¡Ha empatado esta ronda!";
+      tieScore++;
+    } else if (
+      (playerChoice === "piedra" && computerChoice === "tijeras") ||
+      (playerChoice === "papel" && computerChoice === "piedra") ||
+      (playerChoice === "tijeras" && computerChoice === "papel")
+    ) {
+      resultMessageText = "Ha ganado esta ronda!";
+      playerScore++;
+    } else {
+      resultMessageText = "Ha perdido esta ronda.";
+      computerScore++;
+    }
+
+    if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
+      restartButton.disabled = true;
+    } else {
+      restartButton.disabled = false;
+    }
+
+    // Anuncio de las elecciones
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+      choices.forEach((btn) => (btn.disabled = false));
+    } else {
+      setTimeout(() => {
+        choices.forEach((btn) => (btn.disabled = false));
+      }, 500);
+    }
+    const playerMessage = `Ha elegido ${playerChoice}.`;
+    const computerMessage = `La computadora eligió ${computerChoice}.`;
+    speakMessage(playerMessage);
+    speakMessage(computerMessage);
+
+    resultMessage.textContent = resultMessageText;
+    speakMessage(resultMessageText);
+
+    playerScoreDisplay.textContent = playerScore;
+    tieScoreDisplay.textContent = tieScore;
+    computerScoreDisplay.textContent = computerScore;
+  });
 
   choices.forEach((choice) => {
     choice.addEventListener("click", () => {
@@ -103,10 +205,22 @@ document.addEventListener("DOMContentLoaded", () => {
         resultMessageText = "Ha perdido esta ronda.";
         computerScore++;
       }
+
+      if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
+        restartButton.disabled = true;
+      } else {
+        restartButton.disabled = false;
+      }
+
       // Anuncio de las elecciones
-      setTimeout(() => {
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         choices.forEach((btn) => (btn.disabled = false));
-      }, 500);
+      } else {
+        setTimeout(() => {
+          choices.forEach((btn) => (btn.disabled = false));
+        }, 500);
+      }
       const playerMessage = `Ha elegido ${playerChoice}.`;
       const computerMessage = `La computadora eligió ${computerChoice}.`;
       speakMessage(playerMessage);
@@ -127,6 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function restart() {
     restartButton.disabled = true;
+
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
       const msg = new SpeechSynthesisUtterance(
         "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador. Presione enter para aceptar"
@@ -141,14 +256,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       speechSynthesis.speak(msg);
-
-      setTimeout(() => {
+      if (!isVoiceActive) {
+        speechSynthesis.cancel();
         alert(
           "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador."
         );
         restartButton.disabled = false;
-      }, 4000);
-
+      } else {
+        setTimeout(() => {
+          alert(
+            "No se han jugado rondas, el marcador está en ceros, juegue mínimo una ronda para poder reiniciar el marcador."
+          );
+          restartButton.disabled = false;
+        }, 4000);
+      }
       return;
     }
 
@@ -165,14 +286,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     speechSynthesis.speak(msg);
-
-    setTimeout(() => {
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
       let confirmation = confirm(
         "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento?"
       );
 
       if (confirmation) {
-        speechSynthesis.cancel();
         playerScore = 0;
         tieScore = 0;
         computerScore = 0;
@@ -180,50 +300,89 @@ document.addEventListener("DOMContentLoaded", () => {
         tieScoreDisplay.textContent = tieScore;
         computerScoreDisplay.textContent = computerScore;
 
-        const resetMsg = new SpeechSynthesisUtterance(
-          "El marcador se ha reiniciado a 0. Presione enter para confirmar"
-        );
-
-        const voices = speechSynthesis.getVoices();
-        const selectedVoice = voices.find(
-          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
-        );
-        if (selectedVoice) {
-          msg.voice = selectedVoice;
-        }
-
-        speechSynthesis.speak(resetMsg);
-        setTimeout(() => {
-          alert("El marcador se ha reiniciado a 0.");
-          restartButton.disabled = false;
-        }, 2000);
+        alert("El marcador se ha reiniciado a 0.");
+        restartButton.disabled = false;
       } else {
-        speechSynthesis.cancel();
-        const cancelMsg = new SpeechSynthesisUtterance(
-          "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar."
+        alert(
+          "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
         );
-
-        const voices = speechSynthesis.getVoices();
-        const selectedVoice = voices.find(
-          (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
-        );
-        if (selectedVoice) {
-          msg.voice = selectedVoice;
-        }
-
-        speechSynthesis.speak(cancelMsg);
-        setTimeout(() => {
-          alert(
-            "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
-          );
-          restartButton.disabled = false;
-        }, 2000);
       }
-    }, 4000);
+    } else {
+      setTimeout(() => {
+        let confirmation = confirm(
+          "¿Está seguro de que desea reiniciar los puntajes registrados hasta el momento?"
+        );
+
+        if (confirmation) {
+          speechSynthesis.cancel();
+          playerScore = 0;
+          tieScore = 0;
+          computerScore = 0;
+          playerScoreDisplay.textContent = playerScore;
+          tieScoreDisplay.textContent = tieScore;
+          computerScoreDisplay.textContent = computerScore;
+
+          const resetMsg = new SpeechSynthesisUtterance(
+            "El marcador se ha reiniciado a 0. Presione enter para confirmar"
+          );
+
+          const voices = speechSynthesis.getVoices();
+          const selectedVoice = voices.find(
+            (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+          );
+          if (selectedVoice) {
+            msg.voice = selectedVoice;
+          }
+
+          speechSynthesis.speak(resetMsg);
+          if (!isVoiceActive) {
+            speechSynthesis.cancel();
+            alert("El marcador se ha reiniciado a 0.");
+            restartButton.disabled = false;
+          } else {
+            setTimeout(() => {
+              alert("El marcador se ha reiniciado a 0.");
+              restartButton.disabled = false;
+            }, 2000);
+          }
+        } else {
+          speechSynthesis.cancel();
+          const cancelMsg = new SpeechSynthesisUtterance(
+            "Ha cancelado la operación de borrar todos los registros de mejores tiempos. Presione enter para confirmar."
+          );
+
+          const voices = speechSynthesis.getVoices();
+          const selectedVoice = voices.find(
+            (voice) => voice.lang === "es-ES" && voice.name.includes("Pablo")
+          );
+          if (selectedVoice) {
+            msg.voice = selectedVoice;
+          }
+
+          speechSynthesis.speak(cancelMsg);
+          if (!isVoiceActive) {
+            speechSynthesis.cancel();
+            alert(
+              "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+            );
+            restartButton.disabled = false;
+          } else {
+            setTimeout(() => {
+              alert(
+                "Ha cancelado la operación de borrar todos los registros de mejores tiempos."
+              );
+              restartButton.disabled = false;
+            }, 2000);
+          }
+        }
+      }, 4000);
+    }
+    restartButton.disabled = true;
   }
 
   function checkMatchStats() {
     checkStatusButton.disabled = true;
+
     let matchStatsMessage = "";
     if (playerScore == 0 && tieScore == 0 && computerScore == 0) {
       matchStatsMessage = "No se han jugado rondas, el marcador está en ceros";
@@ -264,9 +423,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     speechSynthesis.speak(msg);
-    msg.onboundary = () => {
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
       checkStatusButton.disabled = false;
-    };
+    } else {
+      msg.onboundary = () => {
+        checkStatusButton.disabled = false;
+      };
+    }
   }
 
   // Eventos para botones de otros juegos
@@ -300,4 +464,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   restartButton.addEventListener("click", restart);
   checkStatusButton.addEventListener("click", checkMatchStats);
+  checkVozButton();
 });

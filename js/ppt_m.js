@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const tipsButton = document.getElementById("tips");
   const solutionsButton = document.getElementById("solutions");
 
+  let isVoiceActive = null;
+  
+  function checkVozButton() {
+    isVoiceActive = (localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+    console.log(isVoiceActive); 
+  }
+
   // Función que anuncia el estado de la casilla o botón cuando se pasa el mouse por encima
   function announceCellState(element) {
     speechSynthesis.cancel();
@@ -51,6 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
       msg.text = "Volver al jueguito 2. Piedra, papel o Tijeras.";
     }
     speechSynthesis.speak(msg);
+
+    if (!isVoiceActive) {
+      speechSynthesis.cancel();
+    }
   }
 
   function hearManual(element) {
@@ -251,5 +263,10 @@ document.addEventListener("DOMContentLoaded", () => {
   manual.addEventListener("mouseover", () => announceCellState(manual));
   manual.addEventListener("focus", () => announceCellState(manual));
 
-  wellcome();
+  
+  if (isVoiceActive) {
+    console.log(isVoiceActive);
+    wellcome();
+  }
+  checkVozButton();
 });

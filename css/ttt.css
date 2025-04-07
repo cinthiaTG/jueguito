@@ -218,9 +218,20 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin: 1rem 0.5rem;
   }
+
+  .boton-especial {
+    background-color: var(--secundario);
+    color: var(--blanco);
+  }
   
   .boton:hover {
     background-color: var(--secundario);
+    transform: translateY(-10px);
+  }
+
+  .boton-especial:hover {
+    background-color: var(--blanco);
+    color: var(--primario);
     transform: translateY(-10px);
   }
   

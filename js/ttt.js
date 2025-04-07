@@ -10,13 +10,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const interactionButton = document.getElementById("interaction");
   const characteristicsButton = document.getElementById("characteristics");
   const tipsButton = document.getElementById("tips");
+  const vozButton = document.getElementById("voz");
 
   let isVoiceActive = null;
+
+  vozButton.addEventListener("click", function () {
+    isVoiceActive = !(localStorage.getItem("isVoiceActive") === "true");
+    localStorage.setItem("isVoiceActive", isVoiceActive);
+
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+    } else {
+      vozButton.textContent = "Desactivar voz";
+    }
+
+    if (isVoiceActive) {
+      speechSynthesis.cancel();
+    }
+  });
 
   function checkVozButton() {
     isVoiceActive = localStorage.getItem("isVoiceActive") === "true";
     localStorage.setItem("isVoiceActive", isVoiceActive);
     console.log(isVoiceActive);
+
+    if (!isVoiceActive) {
+      vozButton.textContent = "Activar voz";
+    } else {
+      vozButton.textContent = "Desactivar voz";
+    }
   }
 
   // Función que anuncia el estado de la casilla o botón cuando se pasa el mouse por encima
